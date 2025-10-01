@@ -21,7 +21,7 @@
 #pragma once
 
 
-//#define EE_HANDS //since now only left 
+//#define EE_HANDS //since now only left
 #define MASTER_LEFT
 #define USB_VBUS_PIN GP19
 
@@ -39,6 +39,10 @@
 #define AZOTEQ_IQS5XX_TPS65
 #define AZOTEQ_IQS5XX_ROTATION_270 /*for tps65*/
 //#define AZOTEQ_IQS5XX_ROTATION_90 /*for tps65 rotate version*/
+
+/* NOTE: Y-axis compensation factor is defined in keymap.c
+ * Look for Y_AXIS_COMPENSATION if vertical movement is slower than horizontal
+ * Default value is 1.5f, adjust as needed */
 
 
 //#define AZOTEQ_IQS5XX_TPS43
@@ -67,7 +71,7 @@
   // Reset OS detection when keyboard resets/reconnects
   #define OS_DETECTION_KEYBOARD_RESET
 
-  // Only send one report per OS detection cycle  
+  // Only send one report per OS detection cycle
   #define OS_DETECTION_SINGLE_REPORT
 
   // Extended timeouts to prevent login loops on Linux systems
