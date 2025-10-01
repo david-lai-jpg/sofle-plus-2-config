@@ -33,27 +33,42 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vial-qmk
-          key: vial-qmk-${{ hashFiles('.github/workflows/build-firmware.yml') }}-v2
+          key: vial-qmk-${{ hashFiles('.github/workflows/build-firmware.yml') }}-v3
           restore-keys: |
             vial-qmk-
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 🔧 Install Dependencies
+        run: |
+          # Update package lists
+          sudo apt-get update
+          
+          # Install ARM toolchain and build tools
+          sudo apt-get install -y \
+            gcc-arm-none-eabi \
+            binutils-arm-none-eabi \
+            build-essential \
+            git \
+            make \
+            avr-libc \
+            avrdude
+          
+          # Install Python dependencies
+          python3 -m pip install --upgrade pip
+          python3 -m pip install --user qmk
 
       - name: 🚀 Clone Vial-QMK (if not cached)
         if: steps.cache-vial.outputs.cache-hit != 'true'
         run: |
-          git clone --depth 1 https://github.com/vial-kb/vial-qmk
-          cd vial-qmk
-          make git-submodule
-
-      - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: 🔧 Install QMK Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi
-          python3 -m pip install --user qmk
+          # Clone with submodules using git directly
+          git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/vial-kb/vial-qmk
+          
+          # Verify we got the submodules
+          ls -la vial-qmk/lib/
 
       - name: 📋 Copy SoflePLUS2 Source to Vial-QMK
         run: |
@@ -131,27 +146,42 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vial-qmk
-          key: vial-qmk-${{ hashFiles('.github/workflows/build-firmware.yml') }}-v2
+          key: vial-qmk-${{ hashFiles('.github/workflows/build-firmware.yml') }}-v3
           restore-keys: |
             vial-qmk-
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 🔧 Install Dependencies
+        run: |
+          # Update package lists
+          sudo apt-get update
+          
+          # Install ARM toolchain and build tools
+          sudo apt-get install -y \
+            gcc-arm-none-eabi \
+            binutils-arm-none-eabi \
+            build-essential \
+            git \
+            make \
+            avr-libc \
+            avrdude
+          
+          # Install Python dependencies
+          python3 -m pip install --upgrade pip
+          python3 -m pip install --user qmk
 
       - name: 🚀 Clone Vial-QMK (if not cached)
         if: steps.cache-vial-tps43.outputs.cache-hit != 'true'
         run: |
-          git clone --depth 1 https://github.com/vial-kb/vial-qmk
-          cd vial-qmk
-          make git-submodule
-
-      - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: 🔧 Install QMK Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi
-          python3 -m pip install --user qmk
+          # Clone with submodules using git directly
+          git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/vial-kb/vial-qmk
+          
+          # Verify we got the submodules
+          ls -la vial-qmk/lib/
 
       - name: 📋 Copy SoflePLUS2 Source to Vial-QMK
         run: |
