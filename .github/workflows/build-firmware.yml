@@ -1,0 +1,175 @@
+name: Build SoflePLUS2 TPS65 Firmware
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'keymaps/**'
+      - '*.c'
+      - '*.h'
+      - '*.json'
+      - '.github/workflows/build-firmware.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'keymaps/**'
+      - '*.c'
+      - '*.h'
+      - '*.json'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  build-tps65:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔥 Checkout SoflePLUS2 Source
+        uses: actions/checkout@v4
+        with:
+          path: sofleplus2-source
+
+      - name: ⚡ Cache Vial-QMK
+        id: cache-vial
+        uses: actions/cache@v4
+        with:
+          path: vial-qmk
+          key: vial-qmk-${{ hashFiles('.github/workflows/build-firmware.yml') }}-v2
+          restore-keys: |
+            vial-qmk-
+
+      - name: 🚀 Clone Vial-QMK (if not cached)
+        if: steps.cache-vial.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 https://github.com/vial-kb/vial-qmk
+          cd vial-qmk
+          make git-submodule
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 🔧 Install QMK Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi
+          python3 -m pip install --user qmk
+
+      - name: 📋 Copy SoflePLUS2 Source to Vial-QMK
+        run: |
+          # Remove any existing sofleplus2 keyboard
+          rm -rf vial-qmk/keyboards/sofleplus2
+
+          # Copy our source code
+          cp -r sofleplus2-source vial-qmk/keyboards/sofleplus2
+
+          # Verify the structure
+          ls -la vial-qmk/keyboards/sofleplus2/keymaps/tps65-403d/
+
+      - name: 🔨 Compile TPS65 Firmware
+        run: |
+          cd vial-qmk
+
+          # Set up QMK
+          export PATH="$HOME/.local/bin:$PATH"
+          qmk config user.keyboard=sofleplus2
+          qmk config user.keymap=tps65-403d
+
+          # Compile the firmware
+          qmk compile -kb sofleplus2 -km tps65-403d
+
+          # Verify the UF2 was created
+          ls -la .build/*.uf2
+
+          # Get some info about the build
+          file .build/sofleplus2_tps65-403d.uf2
+          ls -lh .build/sofleplus2_tps65-403d.uf2
+
+      - name: 📦 Upload Firmware Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sofleplus2-tps65-yaxis-fix-firmware
+          path: |
+            vial-qmk/.build/sofleplus2_tps65-403d.uf2
+          retention-days: 30
+
+      - name: 📊 Build Summary
+        run: |
+          echo "## 🎉 Firmware Build Complete! " >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Build Details:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Keyboard**: SoflePLUS2" >> $GITHUB_STEP_SUMMARY
+          echo "- **Keymap**: tps65-403d (with Y-axis fix)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Y-axis Compensation**: 1.5x multiplier" >> $GITHUB_STEP_SUMMARY
+          echo "- **Firmware Size**: $(ls -lh vial-qmk/.build/sofleplus2_tps65-403d.uf2 | awk '{print $5}')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔌 Flashing Instructions:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Download the \`sofleplus2_tps65-403d.uf2\` from the artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "2. Save your keymap in Vial first!" >> $GITHUB_STEP_SUMMARY
+          echo "3. Double-press reset button on keyboard" >> $GITHUB_STEP_SUMMARY
+          echo "4. Drag UF2 file to RPI-RP2 drive" >> $GITHUB_STEP_SUMMARY
+          echo "5. Flash **both halves** (left first, then right)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ⚙️ Y-axis Tuning:" >> $GITHUB_STEP_SUMMARY
+          echo "If cursor Y-axis speed needs adjustment:" >> $GITHUB_STEP_SUMMARY
+          echo "- Edit \`Y_AXIS_COMPENSATION\` in \`keymaps/tps65-403d/keymap.c\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Increase for slower Y-axis (try 1.7f, 2.0f)" >> $GITHUB_STEP_SUMMARY
+          echo "- Decrease for faster Y-axis (try 1.3f, 1.2f)" >> $GITHUB_STEP_SUMMARY
+
+  build-tps43:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.modified, 'tps43-403d') || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: 🔥 Checkout SoflePLUS2 Source
+        uses: actions/checkout@v4
+        with:
+          path: sofleplus2-source
+
+      - name: ⚡ Cache Vial-QMK
+        id: cache-vial-tps43
+        uses: actions/cache@v4
+        with:
+          path: vial-qmk
+          key: vial-qmk-${{ hashFiles('.github/workflows/build-firmware.yml') }}-v2
+          restore-keys: |
+            vial-qmk-
+
+      - name: 🚀 Clone Vial-QMK (if not cached)
+        if: steps.cache-vial-tps43.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 https://github.com/vial-kb/vial-qmk
+          cd vial-qmk
+          make git-submodule
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 🔧 Install QMK Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi
+          python3 -m pip install --user qmk
+
+      - name: 📋 Copy SoflePLUS2 Source to Vial-QMK
+        run: |
+          rm -rf vial-qmk/keyboards/sofleplus2
+          cp -r sofleplus2-source vial-qmk/keyboards/sofleplus2
+
+      - name: 🔨 Compile TPS43 Firmware
+        run: |
+          cd vial-qmk
+          export PATH="$HOME/.local/bin:$PATH"
+          qmk config user.keyboard=sofleplus2
+          qmk config user.keymap=tps43-403d
+          qmk compile -kb sofleplus2 -km tps43-403d
+
+      - name: 📦 Upload TPS43 Firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: sofleplus2-tps43-firmware
+          path: |
+            vial-qmk/.build/sofleplus2_tps43-403d.uf2
+          retention-days: 30
