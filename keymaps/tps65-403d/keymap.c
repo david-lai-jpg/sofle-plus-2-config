@@ -1024,7 +1024,7 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 
     // Y-axis compensation factor for 270-degree rotation issue
     // Increase this value if Y-axis is still too slow, decrease if too fast
-    #define Y_AXIS_COMPENSATION 2.0f  // Adjust this value to match X-axis speed
+    #define Y_AXIS_COMPENSATION 1.9f  // Adjust this value to match X-axis speed
 
     // Apply base scaling first using current active speed
     int16_t current_speed = get_current_cursor_speed();
