@@ -151,28 +151,24 @@
   }
   
   
-//RGB matrix layer indicator, using HSV allows the brightness to be limited
+//RGB matrix layer indicator - ALL KEYS change color
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    uint8_t led_indices[] = {0,1,2,3,4,5,6,11, 12, 13, 22, 23, 36, 37, 38, 39, 40, 41, 42, 47, 48, 49, 58, 59}; // Shared LED indices - updated on 11.27.2024 only above thumb, underglow no, this is for signature with underglow led
-    
     // Get the current RGB brightness value (0-255)
     uint8_t brightness = rgb_matrix_get_val();
-    
+
     // Ensure brightness is never 0 to avoid completely dark indicators
     if (brightness == 0) brightness = 1;
-    
+
     // Helper function to scale color based on brightness
     // Added minimum value of 1 to ensure visibility at low brightness
     #define SCALE_BRIGHTNESS(color) (((color * brightness) / 255) ?: 1)
-    
+
     bool indicator_set = false;
 
     if (host_keyboard_led_state().caps_lock) {
-        for (uint8_t i = 0; i < sizeof(led_indices) / sizeof(led_indices[0]); i++) {
-            if (led_indices[i] >= led_min && led_indices[i] <= led_max) {
-                rgb_matrix_set_color(led_indices[i], 
-                    SCALE_BRIGHTNESS(128), 0, 0); // Dim red for Caps Lock
-            }
+        for (uint8_t i = led_min; i <= led_max; i++) {
+            rgb_matrix_set_color(i,
+                SCALE_BRIGHTNESS(128), 0, 0); // Dim red for Caps Lock
         }
         indicator_set = true;
     }
@@ -181,74 +177,58 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (current_layer > 0) {
         switch (current_layer) {
             case 1:
-                for (uint8_t i = 0; i < sizeof(led_indices) / sizeof(led_indices[0]); i++) {
-                    if (led_indices[i] >= led_min && led_indices[i] <= led_max) {
-                        rgb_matrix_set_color(led_indices[i], 
-                            SCALE_BRIGHTNESS(128), 0, SCALE_BRIGHTNESS(128)); // Dim purple for Layer 1
-                    }
+                for (uint8_t i = led_min; i <= led_max; i++) {
+                    rgb_matrix_set_color(i,
+                        SCALE_BRIGHTNESS(255), SCALE_BRIGHTNESS(128), 0); // Orange for Layer 1 (swapped from Layer 4)
                 }
                 indicator_set = true;
                 break;
             case 2:
-                for (uint8_t i = 0; i < sizeof(led_indices) / sizeof(led_indices[0]); i++) {
-                    if (led_indices[i] >= led_min && led_indices[i] <= led_max) {
-                        rgb_matrix_set_color(led_indices[i], 
-                            0, SCALE_BRIGHTNESS(255), SCALE_BRIGHTNESS(127)); // Dim spring green for Layer 4(2) 11.27.2024 updated for better color scheme
-                    }
+                for (uint8_t i = led_min; i <= led_max; i++) {
+                    rgb_matrix_set_color(i,
+                        0, SCALE_BRIGHTNESS(255), SCALE_BRIGHTNESS(127)); // Spring green for Layer 2
                 }
                 indicator_set = true;
                 break;
             case 3:
-                for (uint8_t i = 0; i < sizeof(led_indices) / sizeof(led_indices[0]); i++) {
-                    if (led_indices[i] >= led_min && led_indices[i] <= led_max) {
-                        rgb_matrix_set_color(led_indices[i], 
-                            0, SCALE_BRIGHTNESS(128), SCALE_BRIGHTNESS(128)); // Dim cyan for Layer 3
-                    }
+                for (uint8_t i = led_min; i <= led_max; i++) {
+                    rgb_matrix_set_color(i,
+                        0, SCALE_BRIGHTNESS(128), SCALE_BRIGHTNESS(128)); // Cyan for Layer 3
                 }
                 indicator_set = true;
                 break;
             case 4:
-                for (uint8_t i = 0; i < sizeof(led_indices) / sizeof(led_indices[0]); i++) {
-                    if (led_indices[i] >= led_min && led_indices[i] <= led_max) {
-                        rgb_matrix_set_color(led_indices[i], 
-                            SCALE_BRIGHTNESS(255), SCALE_BRIGHTNESS(128), 0); // Dim orange for Layer 2(4)
-                    }
+                for (uint8_t i = led_min; i <= led_max; i++) {
+                    rgb_matrix_set_color(i,
+                        SCALE_BRIGHTNESS(128), 0, SCALE_BRIGHTNESS(128)); // Purple for Layer 4 (swapped from Layer 1)
                 }
                 indicator_set = true;
                 break;
             case 5:
-                for (uint8_t i = 0; i < sizeof(led_indices) / sizeof(led_indices[0]); i++) {
-                    if (led_indices[i] >= led_min && led_indices[i] <= led_max) {
-                        rgb_matrix_set_color(led_indices[i], 
-                            0, 0, SCALE_BRIGHTNESS(128)); // Dim blue for Layer 5
-                    }
+                for (uint8_t i = led_min; i <= led_max; i++) {
+                    rgb_matrix_set_color(i,
+                        0, 0, SCALE_BRIGHTNESS(128)); // Blue for Layer 5
                 }
                 indicator_set = true;
                 break;
             case 6:
-                for (uint8_t i = 0; i < sizeof(led_indices) / sizeof(led_indices[0]); i++) {
-                    if (led_indices[i] >= led_min && led_indices[i] <= led_max) {
-                        rgb_matrix_set_color(led_indices[i], 
-                            SCALE_BRIGHTNESS(128), 0, SCALE_BRIGHTNESS(128)); // Dim magenta for Layer 6
-                    }
+                for (uint8_t i = led_min; i <= led_max; i++) {
+                    rgb_matrix_set_color(i,
+                        SCALE_BRIGHTNESS(128), 0, SCALE_BRIGHTNESS(128)); // Magenta for Layer 6
                 }
                 indicator_set = true;
                 break;
             case 7:
-                for (uint8_t i = 0; i < sizeof(led_indices) / sizeof(led_indices[0]); i++) {
-                    if (led_indices[i] >= led_min && led_indices[i] <= led_max) {
-                        rgb_matrix_set_color(led_indices[i], 
-                            SCALE_BRIGHTNESS(255), SCALE_BRIGHTNESS(192), SCALE_BRIGHTNESS(203)); // Dim pink for Layer 7
-                    }
+                for (uint8_t i = led_min; i <= led_max; i++) {
+                    rgb_matrix_set_color(i,
+                        SCALE_BRIGHTNESS(255), SCALE_BRIGHTNESS(192), SCALE_BRIGHTNESS(203)); // Pink for Layer 7
                 }
                 indicator_set = true;
                 break;
             case 8:
-                for (uint8_t i = 0; i < sizeof(led_indices) / sizeof(led_indices[0]); i++) {
-                    if (led_indices[i] >= led_min && led_indices[i] <= led_max) {
-                        rgb_matrix_set_color(led_indices[i], 
-                            SCALE_BRIGHTNESS(255), SCALE_BRIGHTNESS(215), 0); // Dim gold for Layer 8
-                    }
+                for (uint8_t i = led_min; i <= led_max; i++) {
+                    rgb_matrix_set_color(i,
+                        SCALE_BRIGHTNESS(255), SCALE_BRIGHTNESS(215), 0); // Gold for Layer 8
                 }
                 indicator_set = true;
                 break;
@@ -256,7 +236,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 break;
         }
     }
-    
+
     #undef SCALE_BRIGHTNESS
 
     // Return true if we set any indicators, false to allow normal RGB processing
