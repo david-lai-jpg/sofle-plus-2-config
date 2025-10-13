@@ -6,7 +6,6 @@
 //#define DEBUG_ENABLE
 //#define CONSOLE_ENABLE
 
-#define OLED_BRIGHTNESS 100
 #define SPLIT_WPM_ENABLE
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_LED_STATE_ENABLE
@@ -58,9 +57,15 @@
 #define WEAR_LEVELING_BACKING_SIZE 131072  // 128KB
 #define DYNAMIC_KEYMAP_EEPROM_MAX_ADDR 32767  // Allow more Vial remaps
 
-// NKRO removed
 
-// Vial Support (UID moved to rules.mk)
+
+
+#ifdef NKRO_ENABLE
+#define FORCE_NKRO
+#endif
+
+// Vial Support
+#define VIAL_KEYBOARD_UID {0x12, 0x38, 0x7D, 0x9C, 0x1C, 0x0E, 0x58, 0x43}
 
 #define SUPER_ALT_TAB_ENABLE	//Enable super alt tab custom keycode(+178).
 
@@ -80,18 +85,31 @@
 #define WS2812_DI_PIN GP0
 
 
+#ifdef RGBLIGHT_ENABLE
+#define RGBLED_NUM 72
+#define RGBLED_SPLIT { 36, 36 }
+#define RGBLIGHT_SLEEP 			//Turn off LEDs when computer sleeping (+72)
+#define RGBLIGHT_LIMIT_VAL 120  //255 as maximum, 120 as half
+#define RGBLIGHT_HUE_STEP  10
+#define RGBLIGHT_SAT_STEP  17
+#define RGBLIGHT_VAL_STEP  17
+#endif
+
 
 
 #ifdef RGB_MATRIX_ENABLE
-/*RGB signature
+/*RGB signature*/
 #define RGBLED_NUM 72
 #define RGB_MATRIX_LED_COUNT 72
-#define RGB_MATRIX_SPLIT { 36, 36 }*/
+#define RGB_MATRIX_SPLIT { 36, 36 }
 
-/*RGB standard*/
-
+/*RGB standard
+#define RGBLED_NUM 58
+#define RGB_MATRIX_LED_COUNT 58
+#define RGB_MATRIX_SPLIT { 29, 29 }*/
 
 /*RGB end here*/
+#define RGB_MATRIX_DRIVER WS2812 
 #define DRIVER_LED_TOTAL RGBLED_NUM
 #define SPLIT_TRANSPORT_MIRROR //https://github.com/qmk/qmk_firmware/blob/master/docs/config_options.md
 #define RGB_MATRIX_SLEEP

@@ -37,6 +37,7 @@ ENCODER_ENABLE = yes		# Callbacks for encoder, replace with encoder_map_enable
 # RGB Underglow
 RGBLIGHT_ENABLE = no
 RGB_MATRIX_ENABLE = yes
+RGB_MATRIX_DRIVER = ws2812
 VIALRGB_ENABLE = yes
 
 # OLED
@@ -64,9 +65,10 @@ OS_DETECTION_ENABLE = yes
 KEYBOARD_HOOK_ENABLE = yes
 SRC += quantum/os_detection.c
 
+#### KEYBOARD SOURCE FILES ####
+# sofleplus2.c is automatically compiled by QMK, no need to add it to SRC
+
 # Vial 0.7.4 - 2025.07.13
 REPEAT_KEY_ENABLE = yes
 LAYER_LOCK_ENABLE = yes
-
-
 

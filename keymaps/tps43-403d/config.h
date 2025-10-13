@@ -53,9 +53,7 @@
 #define AZOTEQ_IQS5XX_HOLD_TIME 300 // Default 300 v3.02
 #define AZOTEQ_IQS5XX_SCROLL_INITIAL_DISTANCE 8 // Reduced for smaller trackpad (was 10 for TPS65)
 
-#define AZOTEQ_IQS5XX_PRESS_AND_HOLD_ENABLE true //(Disabled) Emulates holding left click to select text.
-#define AZOTEQ_IQS5XX_TAP_ENABLE true //(Disabled) Single tap for left click
-#define AZOTEQ_IQS5XX_TWO_FINGER_TAP_ENABLE true //(Disabled) Two-finger tap for right click
+#define AZOTEQ_IQS5XX_PRESS_AND_HOLD_ENABLE true //(Optional) Emulates holding left click to select text.
 #define AZOTEQ_IQS5XX_ZOOM_ENABLE true //(Optional) Enable zoom gestures Zoom Out (Mouse Button 7) / Zoom In (Mouse Button 8)
 //#define AZOTEQ_IQS5XX_SWIPE_X_ENABLE true //(Optional) Enable swipe gestures X+ (Mouse Button 5) / X- (Mouse Button 4)
 //#define AZOTEQ_IQS5XX_SWIPE_Y_ENABLE true //(Optional) Enable swipe gestures Y+ (Mouse Button 3) / Y- (Mouse Button 6)
@@ -76,15 +74,8 @@
   #define OS_DETECTION_INITIAL_TIMEOUT 2500  // Extended from 1400ms to 2500ms for Linux SDDM compatibility
   #define OS_DETECTION_DEBOUNCE 300          // Extended from 200ms to 300ms for stability
 
-/* Power Management - OLED and RGB sleep/wake */
-#undef OLED_TIMEOUT
-#define OLED_TIMEOUT 300000          // 5 minutes OLED timeout (override default)
-#define RGB_MATRIX_TIMEOUT 300000    // 5 minutes RGB timeout
-#define RGB_MATRIX_SLEEP             // Enable RGB sleep when suspended
-#define RGB_MATRIX_DEFAULT_ON true   // RGB on by default
-
-/* Keyboard name override for this keymap */
-#define PRODUCT "SoflePLUS2 v4.03d TPS43"
+  /* Keyboard name override for this keymap */
+#define PRODUCT "SoflePLUS2 v4.03d TPS43 Signature"
 
 /* Vial UID for this specific keymap */
 #define VIAL_KEYBOARD_UID {0x12, 0x38, 0x7D, 0x9C, 0x1C, 0x0E, 0x58, 0x43}

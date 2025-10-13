@@ -21,7 +21,7 @@
 #pragma once
 
 
-//#define EE_HANDS //since now only left
+//#define EE_HANDS //since now only left 
 #define MASTER_LEFT
 #define USB_VBUS_PIN GP19
 
@@ -40,53 +40,41 @@
 #define AZOTEQ_IQS5XX_ROTATION_270 /*for tps65*/
 //#define AZOTEQ_IQS5XX_ROTATION_90 /*for tps65 rotate version*/
 
-/* NOTE: Y-axis compensation factor is defined in keymap.c
- * Look for Y_AXIS_COMPENSATION if vertical movement is slower than horizontal
- * Default value is 1.5f, adjust as needed */
-
 
 //#define AZOTEQ_IQS5XX_TPS43
-//#define AZOTEQ_IQS5XX_ROTATION_180 /*for tps43*/
+//#define AZOTEQ_IQS5XX_ROTATION_180
 
 
 
 /* azoteq gesture settings */
 // https://github.com/qmk/qmk_firmware/blob/master/docs/feature_pointing_device.md#gesture-settings
 
-/* azoteq config: optimized for larger TPS65 dimensions */
+/* azoteq config: extend drag time */
 #define AZOTEQ_IQS5XX_HOLD_TIME 300 // Default 300 v3.02
-#define AZOTEQ_IQS5XX_SCROLL_INITIAL_DISTANCE 10 // Standard distance for larger TPS65 trackpad
+#define AZOTEQ_IQS5XX_SCROLL_INITIAL_DISTANCE 10 // Default 50
 
 #define AZOTEQ_IQS5XX_PRESS_AND_HOLD_ENABLE true //(Optional) Emulates holding left click to select text.
 #define AZOTEQ_IQS5XX_ZOOM_ENABLE true //(Optional) Enable zoom gestures Zoom Out (Mouse Button 7) / Zoom In (Mouse Button 8)
 //#define AZOTEQ_IQS5XX_SWIPE_X_ENABLE true //(Optional) Enable swipe gestures X+ (Mouse Button 5) / X- (Mouse Button 4)
 //#define AZOTEQ_IQS5XX_SWIPE_Y_ENABLE true //(Optional) Enable swipe gestures Y+ (Mouse Button 3) / Y- (Mouse Button 6)
 
-
-
-
-
 /* KVM OS detection - Linux-optimized extended timeouts */
 
   // Reset OS detection when keyboard resets/reconnects
   #define OS_DETECTION_KEYBOARD_RESET
 
-  // Only send one report per OS detection cycle
+  // Only send one report per OS detection cycle  
   #define OS_DETECTION_SINGLE_REPORT
 
   // Extended timeouts to prevent login loops on Linux systems
   #define OS_DETECTION_INITIAL_TIMEOUT 2500  // Extended from 1400ms to 2500ms for Linux SDDM compatibility
   #define OS_DETECTION_DEBOUNCE 300          // Extended from 200ms to 300ms for stability
 
-/* Power Management - OLED and RGB sleep/wake */
-#undef OLED_TIMEOUT
-#define OLED_TIMEOUT 300000          // 5 minutes OLED timeout (override default)
-#define RGB_MATRIX_TIMEOUT 300000    // 5 minutes RGB timeout
-#define RGB_MATRIX_SLEEP             // Enable RGB sleep when suspended
-#define RGB_MATRIX_DEFAULT_ON true   // RGB on by default
-
-/* Keyboard name override for this keymap */
-#define PRODUCT "SoflePLUS2 v4.03d TPS65 All"
+ /* Keyboard name override for this keymap */
+#define PRODUCT "SoflePLUS2 v4.03d TPS65 Signature"
 
 /* Vial UID for this specific keymap */
-#define VIAL_KEYBOARD_UID {0x12, 0x38, 0x7D, 0x9C, 0x1C, 0x0E, 0x58, 0x65}
+#define VIAL_KEYBOARD_UID {0x12, 0x38, 0x7D, 0x9C, 0x1C, 0x0E, 0x58, 0x43}
+
+
+
