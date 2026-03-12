@@ -70,6 +70,15 @@
   #define OS_DETECTION_INITIAL_TIMEOUT 2500  // Extended from 1400ms to 2500ms for Linux SDDM compatibility
   #define OS_DETECTION_DEBOUNCE 300          // Extended from 200ms to 300ms for stability
 
+/* Achordion / home-row-mods timing */
+#define TAPPING_TERM 280           // Match Cyboard's 280ms
+#define QUICK_TAP_TERM 150         // Prevent auto-repeat on mod-tap keys
+
+/* Tri-layer: hold NUMBER (1) + FN (2) → MOUSELESS (3) */
+#define TRI_LAYER_LOWER_LAYER 1
+#define TRI_LAYER_UPPER_LAYER 2
+#define TRI_LAYER_ADJUST_LAYER 3
+
  /* Keyboard name override for this keymap */
 #define PRODUCT "SoflePLUS2 v4.03d TPS65 Signature"
 

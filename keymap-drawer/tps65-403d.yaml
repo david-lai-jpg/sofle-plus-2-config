@@ -1,7 +1,7 @@
 layout: {qmk_keyboard: sofleplus2, layout_name: LAYOUT}
 layers:
   BASE:
-  - '`'
+  - ESC
   - '1'
   - '2'
   - '3'
@@ -13,7 +13,7 @@ layers:
   - '9'
   - '0'
   - '-'
-  - ESC
+  - TAB
   - Q
   - W
   - E
@@ -24,20 +24,20 @@ layers:
   - I
   - O
   - P
-  - BSPC
-  - TAB
-  - A
-  - S
-  - D
-  - F
+  - '='
+  - LSFT
+  - {t: A, h: LCTL}
+  - {t: S, h: LALT}
+  - {t: D, h: LGUI}
+  - {t: F, h: LSFT}
   - G
   - H
-  - J
-  - K
-  - L
-  - ;
+  - {t: J, h: RSFT}
+  - {t: K, h: RGUI}
+  - {t: L, h: RALT}
+  - {t: ;, h: RCTL}
   - ''''
-  - LSFT
+  - LCTL
   - Z
   - X
   - C
@@ -50,73 +50,76 @@ layers:
   - ','
   - .
   - /
-  - RSFT
-  - LGUI
+  - \
+  - F1
+  - F3
   - LALT
-  - LCTL
-  - SYMBOLS
-  - ENT
+  - LGUI
   - SPC
-  - NAVIGATION
-  - RCTL
-  - RALT
-  - RGUI
+  - {t: ENT, h: SYMBOLS}
+  - {t: BSPC, h: NUMBER}
+  - {t: FN/ML, s: Hold=FN Tap=Mouse}
+  - F3
+  - F2
   - LEFT
   - UP
   - RIGHT
   - DOWN
   - $$mdi:mouse-left-click-outline$$
-  SYMBOLS:
-  - F12
-  - F1
-  - F2
-  - F3
-  - F4
-  - F5
-  - F6
-  - F7
-  - F8
-  - F9
-  - F10
-  - F11
-  - '`'
-  - Sft+1
-  - Sft+2
-  - '['
-  - ']'
-  - /
+  NUMBER:
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - ESC
   - '-'
   - '7'
   - '8'
   - '9'
-  - ','
-  - BSPC
-  - Sft+`
-  - Sft+3
-  - Sft+4
-  - Sft+9
-  - Sft+0
-  - Sft+7
+  - '0'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - UP
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '-'
+  - {t: ▽, type: trans}
   - '='
   - '4'
   - '5'
   - '6'
-  - KP ASTERISK
-  - DELETE
-  - CAPS LOCK
-  - Sft+5
-  - Sft+6
+  - '`'
+  - {t: '{  [', s: Mod-morph}
+  - LEFT
+  - DOWN
+  - RGHT
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - Sft+8
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - NUM LOCK
   - '1'
   - '2'
   - '3'
-  - KP SLASH
-  - KP ENTER
+  - F12
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: '}  ]', s: Mod-morph}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -124,15 +127,12 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - KP DOT
-  - '0'
-  - '='
   - Scr-
   - DPI-
   - Scr+
   - DPI+
   - $$mdi:mouse-left-click-outline$$
-  NAVIGATION:
+  FN:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -145,29 +145,39 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - ESC
+  - F13
+  - F7
+  - F8
+  - F9
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - PGUP
-  - HOME
   - UP
-  - END
-  - PSCR
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - PGDN
+  - '-'
+  - RGB MOD
+  - F11
+  - F4
+  - F5
+  - F6
+  - '`'
+  - {t: '{  [', s: Mod-morph}
   - LEFT
   - DOWN
-  - RIGHT
-  - INSERT
+  - RGHT
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - RGB TOG
+  - F10
+  - F1
+  - F2
+  - F3
+  - F12
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: '}  ]', s: Mod-morph}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -180,16 +190,6 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -198,7 +198,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - RGB TOG
-  LAYER 3:
+  MOUSELESS:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -211,6 +211,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - ESC
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -223,8 +224,15 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - A
+  - S
+  - D
+  - F
   - {t: ▽, type: trans}
+  - Sft+Gui+4
+  - Sft+Gui+5
   - {t: ▽, type: trans}
+  - Sft+Gui+3
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -236,12 +244,19 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - J
+  - K
+  - L
+  - ;
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - ENT
+  - BSPC
+  - {t: FN/ML, s: Hold=FN Tap=Mouse}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -249,6 +264,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  SYMBOLS:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -261,18 +277,39 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - ESC
+  - '-'
+  - '&'
+  - '*'
+  - (
+  - )
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - UP
   - {t: ▽, type: trans}
-  LAYER 4:
   - {t: ▽, type: trans}
+  - '-'
   - {t: ▽, type: trans}
+  - '='
+  - $
+  - '%'
+  - ^
+  - '`'
+  - {t: '{  [', s: Mod-morph}
+  - LEFT
+  - DOWN
+  - RGHT
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - '!'
+  - '@'
+  - '#'
+  - F12
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - {t: '}  ]', s: Mod-morph}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -283,44 +320,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}

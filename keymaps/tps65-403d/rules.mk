@@ -1,4 +1,7 @@
 
+############ ACHORDION ############
+SRC += achordion.c
+
 ############ CAPS WORD ############
 # read more here https://docs.qmk.fm/features/caps_word, but it may relates to COMMAND_ENABLE = no, already disabled by default so no conflict here.
 CAPS_WORD_ENABLE = yes

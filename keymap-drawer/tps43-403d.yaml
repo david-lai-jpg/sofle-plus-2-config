@@ -54,10 +54,10 @@ layers:
   - LGUI
   - LALT
   - LCTL
-  - SYMBOLS
+  - NUMBER
   - ENT
   - SPC
-  - NAVIGATION
+  - FN
   - RCTL
   - RALT
   - RGUI
@@ -66,7 +66,7 @@ layers:
   - RIGHT
   - DOWN
   - $$mdi:mouse-left-click-outline$$
-  SYMBOLS:
+  NUMBER:
   - F12
   - F1
   - F2
@@ -132,7 +132,7 @@ layers:
   - Scr+
   - DPI+
   - $$mdi:mouse-left-click-outline$$
-  NAVIGATION:
+  FN:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -198,7 +198,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - RGB TOG
-  LAYER 3:
+  MOUSELESS:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -264,7 +264,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  LAYER 4:
+  SYMBOLS:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}

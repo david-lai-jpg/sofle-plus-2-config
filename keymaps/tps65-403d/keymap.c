@@ -25,6 +25,7 @@
   #include "rgb_matrix.h"
   #include "eeconfig.h"
   #include "os_detection.h"
+  #include "achordion.h"
 
   #ifndef setPinInputPullup
   #  define setPinInputPullup(pin) gpio_set_pin_input_high(pin)
@@ -78,6 +79,9 @@
       SNIPER_SHOW_MODS,          // Show sniper modifiers
       OS_DETECTION_TOGGLE,       // Toggle OS detection on/off
       ZMTOG,                     // Toggle zoom gestures on/off
+      CK_LBRC,                   // Mod-morph: { normally, [ with shift
+      CK_RBRC,                   // Mod-morph: } normally, ] with shift
+      CK_FNML,                   // FN/Mouseless: hold=MO(2), tap=TG(3); on MOUSELESS: hold=MO(4), tap=TG(3)
       };
   #else
       enum custom_keycodes { // Use USER 00 instead of SAFE_RANGE for Via. VIA json must include the custom keycode.
@@ -107,6 +111,9 @@
       SNIPER_SHOW_MODS,          // Show sniper modifiers
       OS_DETECTION_TOGGLE,       // Toggle OS detection on/off
       ZMTOG,                     // Toggle zoom gestures on/off
+      CK_LBRC,                   // Mod-morph: { normally, [ with shift
+      CK_RBRC,                   // Mod-morph: } normally, ] with shift
+      CK_FNML,                   // FN/Mouseless: hold=MO(2), tap=TG(3); on MOUSELESS: hold=MO(4), tap=TG(3)
       };
   #endif
 
@@ -590,58 +597,64 @@ bool dip_switch_update_user(uint8_t index, bool active) {
 
 // Keymaps and encoder configuration (65 arguments for LAYOUT)
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+    /* Layer 0 — BASE (Cyboard Imprint migration) */
     [0] = LAYOUT(
-        KC_GRAVE, KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_MINUS,
-        KC_ESC,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_BSPC,
-        KC_TAB,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_QUOT,
-        KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_MUTE,    CK_PO, KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
-                        KC_LGUI,KC_LALT,KC_LCTL, MO(1), KC_ENT,      KC_SPC,  MO(2), KC_RCTL, KC_RALT, KC_RGUI,
-                        KC_LEFT, KC_UP, KC_RIGHT, KC_DOWN, MS_BTN1
+        KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
+        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL,
+        KC_LSFT, LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
+        KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,     CK_PO,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+                 KC_F1,   KC_F3,   KC_LALT, KC_LGUI, KC_SPC,              LT(4,KC_ENT), LT(1,KC_BSPC), CK_FNML, KC_F3, KC_F2,
+                 KC_LEFT, KC_UP,   KC_RIGHT,KC_DOWN, MS_BTN1
     ),
 
+    /* Layer 1 — NUMBER (hold pos 56) */
     [1] = LAYOUT(
-        KC_F12,         KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,                        KC_F6,        KC_F7,  KC_F8,  KC_F9,  KC_F10,         KC_F11,
-        KC_GRAVE,       LSFT(KC_1), LSFT(KC_2), KC_LBRC,    KC_RBRC,    KC_SLASH,                     KC_MINUS,     KC_7,   KC_8,   KC_9,   KC_COMMA,       KC_BSPC,
-        LSFT(KC_GRAVE), LSFT(KC_3), LSFT(KC_4), LSFT(KC_9), LSFT(KC_0), LSFT(KC_7),                   KC_EQUAL,     KC_4,   KC_5,   KC_6,   KC_KP_ASTERISK, KC_DELETE,
-        KC_CAPS_LOCK,   LSFT(KC_5), LSFT(KC_6), KC_TRNS,    KC_TRNS,    LSFT(KC_8), KC_TRNS, KC_TRNS, KC_NUM_LOCK,  KC_1,   KC_2,   KC_3,   KC_KP_SLASH,    KC_KP_ENTER,
-                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_KP_DOT, KC_0, KC_EQUAL,
-                SCROLL_SPEED_DOWN, CURSOR_SPEED_DN, SCROLL_SPEED_UP, CURSOR_SPEED_UP, MS_BTN1
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_ESC,  KC_MINS, KC_7,    KC_8,    KC_9,    KC_0,                        KC_TRNS, KC_TRNS, KC_UP,   KC_TRNS, KC_TRNS, KC_MINS,
+        KC_TRNS, KC_EQL,  KC_4,    KC_5,    KC_6,    KC_GRV,                      CK_LBRC, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_1,    KC_2,    KC_3,    KC_F12,  KC_TRNS,  KC_TRNS,  CK_RBRC, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                 SCROLL_SPEED_DOWN, CURSOR_SPEED_DN, SCROLL_SPEED_UP, CURSOR_SPEED_UP, MS_BTN1
     ),
 
+    /* Layer 2 — FN (hold pos 57 via CK_FNML) */
     [2] = LAYOUT(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_PGUP, KC_HOME, KC_UP, KC_END, KC_PSCR, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_PGDN, KC_LEFT, KC_DOWN, KC_RIGHT, KC_INSERT, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, RGB_TOG
+        KC_ESC,  KC_F13,  KC_F7,   KC_F8,   KC_F9,   KC_TRNS,                    KC_TRNS, KC_TRNS, KC_UP,   KC_TRNS, KC_TRNS, KC_MINS,
+        RGB_MOD, KC_F11,  KC_F4,   KC_F5,   KC_F6,   KC_GRV,                     CK_LBRC, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS,
+        RGB_TOG, KC_F10,  KC_F1,   KC_F2,   KC_F3,   KC_F12,  KC_TRNS,  KC_TRNS, CK_RBRC, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, RGB_TOG
     ),
 
+    /* Layer 3 — MOUSELESS (tap pos 57 or tri-layer 1+2) */
     [3] = LAYOUT(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+        KC_ESC,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_A,    KC_S,    KC_D,    KC_F,    KC_TRNS,                     SGUI(KC_4), SGUI(KC_5), KC_TRNS, SGUI(KC_3), KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_J,    KC_K,    KC_L,    KC_SCLN, KC_TRNS,
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_ENT,  KC_BSPC, CK_FNML, KC_TRNS, KC_TRNS,
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
+    /* Layer 4 — SYMBOLS (hold pos 55) */
     [4] = LAYOUT(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+        KC_ESC,  KC_MINS, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,                    KC_TRNS, KC_TRNS, KC_UP,   KC_TRNS, KC_TRNS, KC_MINS,
+        KC_TRNS, KC_EQL,  KC_DLR,  KC_PERC, KC_CIRC, KC_GRV,                     CK_LBRC, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_EXLM, KC_AT,   KC_HASH, KC_F12,  KC_TRNS,  KC_TRNS, CK_RBRC, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
+    /* Layer 5 — Empty (Vial runtime use) */
     [5] = LAYOUT(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     )
 };
 
@@ -704,6 +717,8 @@ void keyboard_post_init_user(void) {
 }
 
 void matrix_scan_user(void) {
+    achordion_task();
+
     // Maintain split keyboard communication timing for animation sync
     static uint16_t sync_timer = 0;
     if (timer_elapsed(sync_timer) > 50) {  // Regular background processing every 50ms
@@ -1122,7 +1137,27 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 // Process record user - handle custom keycodes
 #include <eeprom.h>
 
+// CK_FNML state variables
+static bool fnml_on_mouseless = false;
+static uint16_t fnml_timer = 0;
+
+// Achordion bilateral combination policy
+bool achordion_chord(uint16_t tap_hold_keycode,
+                     keyrecord_t* tap_hold_record,
+                     uint16_t other_keycode,
+                     keyrecord_t* other_record) {
+    // Sofle matrix: rows 0-4 = left half, rows 5-9 = right half
+    uint8_t tap_hold_row = tap_hold_record->event.key.row;
+    uint8_t other_row = other_record->event.key.row;
+
+    bool tap_hold_is_left = tap_hold_row < 5;
+    bool other_is_left = other_row < 5;
+    return tap_hold_is_left != other_is_left;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!process_achordion(keycode, record)) { return false; }
+
     switch (keycode) {
 #ifdef SUPER_ALT_TAB_ENABLE
         case CK_ATABF:
@@ -1375,6 +1410,53 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 save_zoom_setting();  // Save to EEPROM
             }
             break;
+
+        case CK_LBRC:  // Mod-morph: { normally, [ with shift
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    uint8_t saved = get_mods();
+                    del_mods(MOD_MASK_SHIFT);
+                    tap_code(KC_LBRC);       // [
+                    set_mods(saved);
+                } else {
+                    tap_code16(LSFT(KC_LBRC)); // {
+                }
+            }
+            return false;
+
+        case CK_RBRC:  // Mod-morph: } normally, ] with shift
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    uint8_t saved = get_mods();
+                    del_mods(MOD_MASK_SHIFT);
+                    tap_code(KC_RBRC);       // ]
+                    set_mods(saved);
+                } else {
+                    tap_code16(LSFT(KC_RBRC)); // }
+                }
+            }
+            return false;
+
+        case CK_FNML:  // FN/Mouseless toggle
+            if (record->event.pressed) {
+                fnml_timer = timer_read();
+                fnml_on_mouseless = IS_LAYER_ON(3);
+                if (fnml_on_mouseless) {
+                    layer_on(4);  // SYMBOLS on hold (when in MOUSELESS)
+                } else {
+                    layer_on(2);  // FN on hold (when in BASE)
+                }
+            } else {
+                if (fnml_on_mouseless) {
+                    layer_off(4);
+                } else {
+                    layer_off(2);
+                }
+                if (timer_elapsed(fnml_timer) < TAPPING_TERM) {
+                    layer_invert(3);  // Toggle MOUSELESS
+                }
+            }
+            return false;
     }
 
     return true;
