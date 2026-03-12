@@ -31,7 +31,7 @@ OUTPUT_DIR = ROOT / "keymap-drawer"
 CONFIG_YAML = ROOT / "keymap_drawer.config.yaml"
 
 # Layer names (indices → display names for keymap-drawer)
-LAYER_NAMES = ["BASE", "NUMBER", "FN", "MOUSELESS", "SYMBOLS", "LAYER 5"]
+LAYER_NAMES = ["BASE", "NUMBER", "FN", "MOUSELESS", "SYMBOLS"]
 
 
 # ─── C keymap parser ────────────────────────────────────────────────────────
