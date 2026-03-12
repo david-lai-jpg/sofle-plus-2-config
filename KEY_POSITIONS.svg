@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1300" height="580" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .key { fill: #2d2d2d; stroke: #00ff00; stroke-width: 2; }
+      .key-num { fill: #ff00ff; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .encoder { fill: #1a1a1a; stroke: #ff9900; stroke-width: 2; }
+      .encoder-num { fill: #ff9900; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .trackpad { fill: #1a1a2a; stroke: #cc66ff; stroke-width: 2; }
+      .trackpad-num { fill: #cc66ff; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .thumb { fill: #3d3d3d; stroke: #00ff00; stroke-width: 2; }
+      .thumb-tall { fill: #3d3d3d; stroke: #00ccff; stroke-width: 2; }
+      .title { fill: #ffffff; font-family: 'Courier New', monospace; font-size: 24px; font-weight: bold; text-anchor: middle; }
+      .subtitle { fill: #888888; font-family: 'Courier New', monospace; font-size: 13px; text-anchor: middle; }
+      .section { fill: #ffff00; font-family: 'Courier New', monospace; font-size: 14px; font-weight: bold; }
+      .row-label { fill: #00ffff; font-family: 'Courier New', monospace; font-size: 11px; text-anchor: end; }
+      .legend-text { fill: #00ffff; font-family: 'Courier New', monospace; font-size: 12px; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1300" height="580" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="650" y="30" class="title">SOFLEPLUS2 - KEY POSITION MAP</text>
+  <text x="650" y="50" class="subtitle">65 Keys Total | 4 Rows (0-49) + 2 Encoders (42-43) + Thumbs (50-59) + Trackpad (60-64)</text>
+
+  <!-- ═══════════════════════════════════════ LEFT HALF ═══════════════════════════════════════ -->
+  <text x="40" y="78" class="section">LEFT HALF</text>
+
+  <!-- Row 0 Left (pos 0-5): ` 1 2 3 4 5 -->
+  <text x="35" y="110" class="row-label">R0</text>
+  <rect x="40"  y="94"  width="50" height="50" class="key" rx="6"/><text x="65"  y="125" class="key-num">0</text>
+  <rect x="98"  y="88"  width="50" height="50" class="key" rx="6"/><text x="123" y="119" class="key-num">1</text>
+  <rect x="156" y="76"  width="50" height="50" class="key" rx="6"/><text x="181" y="107" class="key-num">2</text>
+  <rect x="214" y="70"  width="50" height="50" class="key" rx="6"/><text x="239" y="101" class="key-num">3</text>
+  <rect x="272" y="76"  width="50" height="50" class="key" rx="6"/><text x="297" y="107" class="key-num">4</text>
+  <rect x="330" y="82"  width="50" height="50" class="key" rx="6"/><text x="355" y="113" class="key-num">5</text>
+
+  <!-- Row 1 Left (pos 12-17): Esc Q W E R T -->
+  <text x="35" y="168" class="row-label">R1</text>
+  <rect x="40"  y="152" width="50" height="50" class="key" rx="6"/><text x="65"  y="183" class="key-num">12</text>
+  <rect x="98"  y="146" width="50" height="50" class="key" rx="6"/><text x="123" y="177" class="key-num">13</text>
+  <rect x="156" y="134" width="50" height="50" class="key" rx="6"/><text x="181" y="165" class="key-num">14</text>
+  <rect x="214" y="128" width="50" height="50" class="key" rx="6"/><text x="239" y="159" class="key-num">15</text>
+  <rect x="272" y="134" width="50" height="50" class="key" rx="6"/><text x="297" y="165" class="key-num">16</text>
+  <rect x="330" y="140" width="50" height="50" class="key" rx="6"/><text x="355" y="171" class="key-num">17</text>
+
+  <!-- Row 2 Left (pos 24-29): Tab A S D F G -->
+  <text x="35" y="226" class="row-label">R2</text>
+  <rect x="40"  y="210" width="50" height="50" class="key" rx="6"/><text x="65"  y="241" class="key-num">24</text>
+  <rect x="98"  y="204" width="50" height="50" class="key" rx="6"/><text x="123" y="235" class="key-num">25</text>
+  <rect x="156" y="192" width="50" height="50" class="key" rx="6"/><text x="181" y="223" class="key-num">26</text>
+  <rect x="214" y="186" width="50" height="50" class="key" rx="6"/><text x="239" y="217" class="key-num">27</text>
+  <rect x="272" y="192" width="50" height="50" class="key" rx="6"/><text x="297" y="223" class="key-num">28</text>
+  <rect x="330" y="198" width="50" height="50" class="key" rx="6"/><text x="355" y="229" class="key-num">29</text>
+
+  <!-- Row 3 Left (pos 36-41): Shift Z X C V B -->
+  <text x="35" y="284" class="row-label">R3</text>
+  <rect x="40"  y="268" width="50" height="50" class="key" rx="6"/><text x="65"  y="299" class="key-num">36</text>
+  <rect x="98"  y="262" width="50" height="50" class="key" rx="6"/><text x="123" y="293" class="key-num">37</text>
+  <rect x="156" y="250" width="50" height="50" class="key" rx="6"/><text x="181" y="281" class="key-num">38</text>
+  <rect x="214" y="244" width="50" height="50" class="key" rx="6"/><text x="239" y="275" class="key-num">39</text>
+  <rect x="272" y="250" width="50" height="50" class="key" rx="6"/><text x="297" y="281" class="key-num">40</text>
+  <rect x="330" y="256" width="50" height="50" class="key" rx="6"/><text x="355" y="287" class="key-num">41</text>
+
+  <!-- ═══════════════════════════════════════ ENCODERS ═══════════════════════════════════════ -->
+  <text x="415" y="240" class="section">ENC</text>
+  <rect x="400" y="256" width="50" height="50" class="encoder" rx="6"/><text x="425" y="287" class="encoder-num">42</text>
+  <rect x="468" y="256" width="50" height="50" class="encoder" rx="6"/><text x="493" y="287" class="encoder-num">43</text>
+
+  <!-- ═══════════════════════════════════════ RIGHT HALF ═══════════════════════════════════════ -->
+  <text x="560" y="78" class="section">RIGHT HALF</text>
+
+  <!-- Row 0 Right (pos 6-11): 6 7 8 9 0 - -->
+  <text x="915" y="110" class="row-label">R0</text>
+  <rect x="560" y="82"  width="50" height="50" class="key" rx="6"/><text x="585" y="113" class="key-num">6</text>
+  <rect x="618" y="76"  width="50" height="50" class="key" rx="6"/><text x="643" y="107" class="key-num">7</text>
+  <rect x="676" y="70"  width="50" height="50" class="key" rx="6"/><text x="701" y="101" class="key-num">8</text>
+  <rect x="734" y="76"  width="50" height="50" class="key" rx="6"/><text x="759" y="107" class="key-num">9</text>
+  <rect x="792" y="88"  width="50" height="50" class="key" rx="6"/><text x="817" y="119" class="key-num">10</text>
+  <rect x="850" y="94"  width="50" height="50" class="key" rx="6"/><text x="875" y="125" class="key-num">11</text>
+
+  <!-- Row 1 Right (pos 18-23): Y U I O P Bspc -->
+  <text x="915" y="168" class="row-label">R1</text>
+  <rect x="560" y="140" width="50" height="50" class="key" rx="6"/><text x="585" y="171" class="key-num">18</text>
+  <rect x="618" y="134" width="50" height="50" class="key" rx="6"/><text x="643" y="165" class="key-num">19</text>
+  <rect x="676" y="128" width="50" height="50" class="key" rx="6"/><text x="701" y="159" class="key-num">20</text>
+  <rect x="734" y="134" width="50" height="50" class="key" rx="6"/><text x="759" y="165" class="key-num">21</text>
+  <rect x="792" y="146" width="50" height="50" class="key" rx="6"/><text x="817" y="177" class="key-num">22</text>
+  <rect x="850" y="152" width="50" height="50" class="key" rx="6"/><text x="875" y="183" class="key-num">23</text>
+
+  <!-- Row 2 Right (pos 30-35): H J K L ; ' -->
+  <text x="915" y="226" class="row-label">R2</text>
+  <rect x="560" y="198" width="50" height="50" class="key" rx="6"/><text x="585" y="229" class="key-num">30</text>
+  <rect x="618" y="192" width="50" height="50" class="key" rx="6"/><text x="643" y="223" class="key-num">31</text>
+  <rect x="676" y="186" width="50" height="50" class="key" rx="6"/><text x="701" y="217" class="key-num">32</text>
+  <rect x="734" y="192" width="50" height="50" class="key" rx="6"/><text x="759" y="223" class="key-num">33</text>
+  <rect x="792" y="204" width="50" height="50" class="key" rx="6"/><text x="817" y="235" class="key-num">34</text>
+  <rect x="850" y="210" width="50" height="50" class="key" rx="6"/><text x="875" y="241" class="key-num">35</text>
+
+  <!-- Row 3 Right (pos 44-49): N M , . / Shift -->
+  <text x="915" y="284" class="row-label">R3</text>
+  <rect x="560" y="256" width="50" height="50" class="key" rx="6"/><text x="585" y="287" class="key-num">44</text>
+  <rect x="618" y="250" width="50" height="50" class="key" rx="6"/><text x="643" y="281" class="key-num">45</text>
+  <rect x="676" y="244" width="50" height="50" class="key" rx="6"/><text x="701" y="275" class="key-num">46</text>
+  <rect x="734" y="250" width="50" height="50" class="key" rx="6"/><text x="759" y="281" class="key-num">47</text>
+  <rect x="792" y="262" width="50" height="50" class="key" rx="6"/><text x="817" y="293" class="key-num">48</text>
+  <rect x="850" y="268" width="50" height="50" class="key" rx="6"/><text x="875" y="299" class="key-num">49</text>
+
+  <!-- ═══════════════════════════════════════ LEFT THUMB ═══════════════════════════════════════ -->
+  <text x="98" y="340" class="section">LEFT THUMB</text>
+  <rect x="98"  y="352" width="50" height="50" class="thumb" rx="6"/><text x="123" y="383" class="key-num">50</text>
+  <rect x="156" y="348" width="50" height="50" class="thumb" rx="6"/><text x="181" y="379" class="key-num">51</text>
+  <rect x="214" y="350" width="50" height="50" class="thumb" rx="6"/><text x="239" y="381" class="key-num">52</text>
+  <rect x="272" y="354" width="50" height="50" class="thumb" rx="6"/><text x="297" y="385" class="key-num">53</text>
+  <rect x="338" y="340" width="50" height="72" class="thumb-tall" rx="6"/><text x="363" y="382" class="key-num">54</text>
+
+  <!-- ═══════════════════════════════════════ RIGHT THUMB ═══════════════════════════════════════ -->
+  <text x="560" y="340" class="section">RIGHT THUMB</text>
+  <rect x="530" y="340" width="50" height="72" class="thumb-tall" rx="6"/><text x="555" y="382" class="key-num">55</text>
+  <rect x="596" y="354" width="50" height="50" class="thumb" rx="6"/><text x="621" y="385" class="key-num">56</text>
+  <rect x="654" y="350" width="50" height="50" class="thumb" rx="6"/><text x="679" y="381" class="key-num">57</text>
+  <rect x="712" y="348" width="50" height="50" class="thumb" rx="6"/><text x="737" y="379" class="key-num">58</text>
+  <rect x="770" y="352" width="50" height="50" class="thumb" rx="6"/><text x="795" y="383" class="key-num">59</text>
+
+  <!-- ═══════════════════════════════════════ TRACKPAD ═══════════════════════════════════════ -->
+  <text x="410" y="340" class="section">TRACKPAD</text>
+  <!-- D-pad arrangement -->
+  <rect x="398" y="388" width="42" height="42" class="trackpad" rx="6"/><text x="419" y="415" class="trackpad-num">60</text>
+  <rect x="438" y="352" width="42" height="42" class="trackpad" rx="6"/><text x="459" y="379" class="trackpad-num">61</text>
+  <rect x="478" y="388" width="42" height="42" class="trackpad" rx="6"/><text x="499" y="415" class="trackpad-num">62</text>
+  <rect x="438" y="428" width="42" height="42" class="trackpad" rx="6"/><text x="459" y="455" class="trackpad-num">63</text>
+  <rect x="438" y="478" width="42" height="42" class="trackpad" rx="20"/><text x="459" y="505" class="trackpad-num">64</text>
+  <!-- Trackpad labels -->
+  <text x="419" y="440" class="legend-text" text-anchor="middle" font-size="9">L</text>
+  <text x="459" y="398" class="legend-text" text-anchor="middle" font-size="9">U</text>
+  <text x="499" y="440" class="legend-text" text-anchor="middle" font-size="9">R</text>
+  <text x="459" y="478" class="legend-text" text-anchor="middle" font-size="9">D</text>
+  <text x="459" y="528" class="legend-text" text-anchor="middle" font-size="9">CLK</text>
+
+  <!-- ═══════════════════════════════════════ LEGEND ═══════════════════════════════════════ -->
+  <text x="960" y="78" class="section">LEGEND</text>
+
+  <rect x="960" y="90"  width="28" height="28" class="key" rx="4"/>
+  <text x="996" y="111" class="legend-text">Main Keys (green)</text>
+
+  <rect x="960" y="126" width="28" height="28" class="encoder" rx="4"/>
+  <text x="996" y="147" class="legend-text">Encoders (orange)</text>
+
+  <rect x="960" y="162" width="28" height="28" class="thumb" rx="4"/>
+  <text x="996" y="183" class="legend-text">Thumb Keys</text>
+
+  <rect x="960" y="198" width="28" height="28" class="thumb-tall" rx="4"/>
+  <text x="996" y="219" class="legend-text">Thumb 1.5u (cyan)</text>
+
+  <rect x="960" y="234" width="28" height="28" class="trackpad" rx="4"/>
+  <text x="996" y="255" class="legend-text">Trackpad (purple)</text>
+
+  <!-- Base Layer Reference -->
+  <text x="960" y="290" class="section">BASE LAYER REF</text>
+  <text x="960" y="308" class="legend-text">0-5:   `  1  2  3  4  5</text>
+  <text x="960" y="323" class="legend-text">6-11:  6  7  8  9  0  -</text>
+  <text x="960" y="343" class="legend-text">12-17: Esc Q  W  E  R  T</text>
+  <text x="960" y="358" class="legend-text">18-23: Y  U  I  O  P  Bspc</text>
+  <text x="960" y="378" class="legend-text">24-29: Tab A  S  D  F  G</text>
+  <text x="960" y="393" class="legend-text">30-35: H  J  K  L  ;  '</text>
+  <text x="960" y="413" class="legend-text">36-41: Sft Z  X  C  V  B</text>
+  <text x="960" y="428" class="legend-text">44-49: N  M  ,  .  /  Sft</text>
+  <text x="960" y="448" class="legend-text">42-43: Encoders (L/R)</text>
+  <text x="960" y="468" class="legend-text">50-54: GUI Alt Ctl MO1 Ent</text>
+  <text x="960" y="483" class="legend-text">55-59: Spc MO2 Ctl Alt GUI</text>
+  <text x="960" y="503" class="legend-text">60-64: Trackpad D-Pad+Click</text>
+
+  <!-- Bottom summary -->
+  <text x="650" y="560" class="subtitle">Verified: 65 positions (0-64) | Rows: 48 keys | Encoders: 2 | Thumbs: 10 | Trackpad: 5</text>
+</svg>

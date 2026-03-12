@@ -1,0 +1,42 @@
+name: Draw Keymap
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "keymaps/**/keymap.c"
+      - "scripts/draw-keymap.py"
+      - "keyboard.json"
+      - "keymap_drawer.config.yaml"
+      - ".github/workflows/draw-keymap.yml"
+
+jobs:
+  draw:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install keymap-drawer
+        run: pip install keymap-drawer
+
+      - name: Generate Keymap SVGs
+        run: python3 scripts/draw-keymap.py
+
+      - name: Commit SVGs
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add keymap-drawer/
+          git diff --staged --quiet || git commit -m "[Draw] ${COMMIT_MSG}"
+          git push

@@ -1,0 +1,65 @@
+draw_config:
+  n_columns: 1
+  draw_key_sides: true
+  key_w: 60.0
+  key_h: 56.0
+  split_gap: 30.0
+  combo_w: 28.0
+  combo_h: 26.0
+  key_rx: 6.0
+  key_ry: 6.0
+  inner_pad_w: 2.0
+  inner_pad_h: 2.0
+  outer_pad_w: 40.0
+  outer_pad_h: 56.0
+  line_spacing: 1.2
+  arc_radius: 6.0
+  append_colon_to_layer_header: true
+  small_pad: 2.0
+  svg_extra_style: |
+    svg.keymap {
+      font-family: Ubuntu Mono, Inconsolata, Consolas, Liberation Mono, Menlo, monospace;
+      font-size: 12px;
+      font-weight: bold;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Color accent for held keys */
+    rect.held, rect.combo.held {
+        fill: #ffc;
+    }
+
+parse_config:
+  mark_alternate_layer_activators: true
+  sticky_label: $$mdi:gesture-tap-hold$$
+  trans_legend:
+    t: ▽
+    type: trans
+  raw_binding_map:
+    CK_ATABF: {t: ATab→, s: Alt-Tab}
+    CK_ATABR: {t: ATab←, s: Alt-Tab}
+    CK_ATMWU: {t: A+Wh↑}
+    CK_ATMWD: {t: A+Wh↓}
+    CK_PO: {t: $$mdi:power$$, s: Power}
+    SCROLL_DIR_V: {t: Scr↕}
+    SCROLL_DIR_H: {t: Scr↔}
+    CURSOR_SPEED_UP: {t: DPI+}
+    CURSOR_SPEED_DN: {t: DPI-}
+    CURSOR_SPEED_RESET: {t: DPI₀}
+    SCROLL_SPEED_UP: {t: Scr+}
+    SCROLL_SPEED_DOWN: {t: Scr-}
+    SCROLL_SPEED_RESET: {t: Scr₀}
+    TRACKPAD_LAYER_SCROLL_SET: {t: LaScr, s: Scroll Layer}
+    TRACKPAD_LAYER_SWIPE2_SET: {t: LaSw2, s: Swipe2 Layer}
+    TRACKPAD_LAYER_SWIPE3_SET: {t: LaSw3, s: Swipe3 Layer}
+    TRACKPAD_LAYER_RESET: {t: La₀, s: Reset Layer}
+    TRACKPAD_TOGGLE: {t: $$mdi:gesture-tap$$, s: Trackpad}
+    SNIPER_MO: {t: $$mdi:target$$, s: Sniper MO}
+    SNIPER_TOG: {t: $$mdi:target-variant$$, s: Sniper TG}
+    SNIPER_SET_MODS: {t: Snp Learn}
+    SNIPER_DPI_UP: {t: Snp+}
+    SNIPER_DPI_DOWN: {t: Snp-}
+    SNIPER_SHOW_MODS: {t: Snp Show}
+    OS_DETECTION_TOGGLE: {t: OS Det, s: Toggle}
+    ZMTOG: {t: Zoom, s: Toggle}
+    MS_BTN1: {t: $$mdi:mouse-left-click-outline$$}
