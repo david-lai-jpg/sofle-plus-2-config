@@ -62,7 +62,5 @@ parse_config:
     SNIPER_SHOW_MODS: {t: Snp Show}
     OS_DETECTION_TOGGLE: {t: OS Det, s: Toggle}
     ZMTOG: {t: Zoom, s: Toggle}
-    CK_LBRC: {t: "{  [", s: Mod-morph}
-    CK_RBRC: {t: "}  ]", s: Mod-morph}
     CK_FNML: {t: FN/ML, s: "Hold=FN Tap=Mouse"}
     MS_BTN1: {t: $$mdi:mouse-left-click-outline$$}

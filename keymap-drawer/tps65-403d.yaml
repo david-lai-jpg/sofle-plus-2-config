@@ -97,7 +97,7 @@ layers:
   - '5'
   - '6'
   - '`'
-  - {t: '{  [', s: Mod-morph}
+  - '['
   - LEFT
   - DOWN
   - RGHT
@@ -111,7 +111,7 @@ layers:
   - F12
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: '}  ]', s: Mod-morph}
+  - ']'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -163,7 +163,7 @@ layers:
   - F5
   - F6
   - '`'
-  - {t: '{  [', s: Mod-morph}
+  - '['
   - LEFT
   - DOWN
   - RGHT
@@ -177,7 +177,7 @@ layers:
   - F12
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: '}  ]', s: Mod-morph}
+  - ']'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -295,7 +295,7 @@ layers:
   - '%'
   - ^
   - '`'
-  - {t: '{  [', s: Mod-morph}
+  - '['
   - LEFT
   - DOWN
   - RGHT
@@ -309,7 +309,7 @@ layers:
   - F12
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: '}  ]', s: Mod-morph}
+  - ']'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
