@@ -1141,6 +1141,14 @@ bool achordion_chord(uint16_t tap_hold_keycode,
     return tap_hold_is_left != other_is_left;
 }
 
+// Disable Achordion for layer-tap (thumb) keys — they don't need bilateral checks
+uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
+    if (IS_QK_LAYER_TAP(tap_hold_keycode)) {
+        return 0;  // Bypass Achordion entirely for LT() keys
+    }
+    return 200;  // Match TAPPING_TERM for home-row mods
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_achordion(keycode, record)) { return false; }
 
