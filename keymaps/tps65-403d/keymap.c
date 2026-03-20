@@ -1953,8 +1953,7 @@ static void print_status_narrow(void) {
         /* Row 4: WPM */
         oled_set_cursor(0, 4);
         char wpm_str[6];
-        snprintf(wpm_str, sizeof(wpm_str), "%3d", get_current_wpm());
-        oled_write_P(PSTR("W"), false);
+        snprintf(wpm_str, sizeof(wpm_str), "%5d", get_current_wpm());
         oled_write(wpm_str, false);
 
         /* Row 5: empty */
