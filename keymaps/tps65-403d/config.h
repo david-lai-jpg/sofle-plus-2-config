@@ -70,10 +70,12 @@
   #define OS_DETECTION_INITIAL_TIMEOUT 2500  // Extended from 1400ms to 2500ms for Linux SDDM compatibility
   #define OS_DETECTION_DEBOUNCE 300          // Extended from 200ms to 300ms for stability
 
-/* Achordion / home-row-mods timing */
-#define TAPPING_TERM 200           // 200ms tap-hold window (was 250ms — too sluggish for fast typing)
+/* Home-row-mods: Chordal Hold + Flow Tap (replaces Achordion) */
+#define TAPPING_TERM 200           // Tap-hold decision window
 #define QUICK_TAP_TERM 150         // Prevent auto-repeat on mod-tap keys
-#define ACHORDION_STREAK           // Suppress mod activation during fast typing rolls
+#define CHORDAL_HOLD               // Positional hold: only opposite-hand keys trigger holds
+#define PERMISSIVE_HOLD            // Nested press (press+release while holding) triggers hold
+#define FLOW_TAP_TERM 150          // Fast typing streak: keys within 150ms always tap (like ZMK require-prior-idle-ms)
 
 /* Tri-layer: hold NUMBER (1) + FN (2) → MOUSELESS (3) */
 #define TRI_LAYER_LOWER_LAYER 1

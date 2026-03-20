@@ -25,7 +25,7 @@
   #include "rgb_matrix.h"
   #include "eeconfig.h"
   #include "os_detection.h"
-  #include "achordion.h"
+  #include <string.h>  // memset, memcpy_P
 
   #ifndef setPinInputPullup
   #  define setPinInputPullup(pin) gpio_set_pin_input_high(pin)
@@ -717,16 +717,6 @@ void keyboard_post_init_user(void) {
 }
 
 void matrix_scan_user(void) {
-    achordion_task();
-
-    // Maintain split keyboard communication timing for animation sync
-    static uint16_t sync_timer = 0;
-    if (timer_elapsed(sync_timer) > 50) {  // Regular background processing every 50ms
-        sync_timer = timer_read();
-        // This regular timer check maintains communication patterns between halves
-        // similar to what OS detection provided in the working version
-    }
-
 #ifdef SUPER_ALT_TAB_ENABLE
     if (is_alt_tab_active) {
         if (timer_elapsed(alt_tab_timer) > 1000) {
@@ -1119,36 +1109,20 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 static bool fnml_on_mouseless = false;
 static uint16_t fnml_timer = 0;
 
-// Achordion bilateral combination policy
-bool achordion_chord(uint16_t tap_hold_keycode,
-                     keyrecord_t* tap_hold_record,
-                     uint16_t other_keycode,
-                     keyrecord_t* other_record) {
-    // Sofle matrix: rows 0-4 = left half, rows 5-9 = right half
-    uint8_t tap_hold_row = tap_hold_record->event.key.row;
-    uint8_t other_row = other_record->event.key.row;
-
-    bool tap_hold_is_left = tap_hold_row < 5;
-    bool other_is_left = other_row < 5;
-    return tap_hold_is_left != other_is_left;
-}
-
-// Disable Achordion for layer-tap (thumb) keys — they don't need bilateral checks
-uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
-    if (IS_QK_LAYER_TAP(tap_hold_keycode)) {
-        return 0;  // Bypass Achordion entirely for LT() keys
-    }
-    return TAPPING_TERM;  // Match TAPPING_TERM for home-row mods
-}
-
-// Make all mods eager — apply immediately, revert if Achordion decides it was a tap.
-// Without this, GUI/Alt wait the full timeout before activating, causing perceived lag.
-bool achordion_eager_mod(uint8_t mod) {
-    return true;
-}
+/* Chordal Hold layout — maps each key to left ('L'), right ('R'), or neutral ('*').
+ * Used by QMK's built-in Chordal Hold to decide tap vs hold based on which hand
+ * pressed the next key. Replaces the old Achordion bilateral check.
+ */
+const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
+    'L', 'L', 'L', 'L', 'L', 'L',                       'R', 'R', 'R', 'R', 'R', 'R',
+    'L', 'L', 'L', 'L', 'L', 'L',                       'R', 'R', 'R', 'R', 'R', 'R',
+    'L', 'L', 'L', 'L', 'L', 'L',                       'R', 'R', 'R', 'R', 'R', 'R',
+    'L', 'L', 'L', 'L', 'L', 'L',  '*',        '*',     'R', 'R', 'R', 'R', 'R', 'R',
+              '*', '*', '*', '*', '*',                   '*', '*', '*', '*', '*',
+              '*', '*', '*', '*', '*'
+);
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (!process_achordion(keycode, record)) { return false; }
 
     switch (keycode) {
 #ifdef SUPER_ALT_TAB_ENABLE
