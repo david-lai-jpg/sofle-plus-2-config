@@ -18,8 +18,9 @@ VIAL_KEYBOARD_UID = {0x12,0x38,0x7D,0x9C,0x1C,0x0E,0x58,0x43}
 VIAL_USER_CONFIG_ENABLE = yes
 
 
-# Reduce size of Vial
-QMK_SETTINGS = yes
+# QMK_SETTINGS disabled — it overrides CHORDAL_HOLD and FLOW_TAP_TERM with
+# EEPROM values (default 0), silently disabling both features at runtime.
+QMK_SETTINGS = no
 COMBO_ENABLE = no              # Not used — saves process_record overhead
 TAP_DANCE_ENABLE = no          # CK_SHCP is manual, not using tap_dance_actions[]
 KEY_OVERRIDE_ENABLE = no       # Not used — saves process_record overhead
