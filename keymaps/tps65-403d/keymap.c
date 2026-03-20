@@ -1902,25 +1902,14 @@ static void display_large_layer_number(uint8_t layer) {
 
 static void print_status_narrow(void) {
 
+        uint8_t current_layer = get_highest_layer(layer_state);
 
-    /* Layer name header */
-        oled_set_cursor(0,1);
-        uint8_t display_layer = get_highest_layer(layer_state);
-        switch (display_layer) {
-            case 0: oled_write_P(PSTR("BASIC"), false); break;
-            case 1: oled_write_P(PSTR(" NUM "), false); break;
-            case 2: oled_write_P(PSTR(" FNC "), false); break;
-            case 3: oled_write_P(PSTR("MOUSE"), false); break;
-            case 4: oled_write_P(PSTR(" SYM "), false); break;
-            default: oled_write_P(PSTR("     "), false); break;
-        }
-
-        oled_set_cursor(0,2);
-        // Display OS detection status
+        /* Row 1: OS detection */
+        oled_set_cursor(0, 1);
         if (!os_detection_enabled) {
-            oled_write("PLUS+", false);  // Default branding when disabled
+            oled_write_P(PSTR("PLUS+"), false);
         } else {
-            os_variant_t detected_os = detected_host_os();  // Get actual OS when enabled
+            os_variant_t detected_os = detected_host_os();
             switch(detected_os) {
                 case OS_MACOS:
                 case OS_IOS:
@@ -1933,13 +1922,27 @@ static void print_status_narrow(void) {
                     oled_write("LINUX", false);
                     break;
                 default:
-                    oled_write("PLUS+", false);  // Fallback to default branding
+                    oled_write("PLUS+", false);
                     break;
             }
         }
 
-        /* Caps Lock indicator */
-        oled_set_cursor(0,3);
+        /* Row 2: Gesture mode label */
+        oled_set_cursor(0, 2);
+        if (!trackpad_enabled) {
+            oled_write_P(PSTR("NOTRK"), false);
+        } else if (user_config.scroll_layers & (1 << current_layer)) {
+            oled_write_P(PSTR("SCROL"), false);
+        } else if (user_config.swipe2_layers & (1 << current_layer)) {
+            oled_write_P(PSTR("2SWPE"), false);
+        } else if (user_config.swipe3_layers & (1 << current_layer)) {
+            oled_write_P(PSTR("3SWPE"), false);
+        } else {
+            oled_write_P(PSTR("CURSR"), false);
+        }
+
+        /* Row 3: Caps Lock indicator */
+        oled_set_cursor(0, 3);
         led_t led_usb_state = host_keyboard_led_state();
         if (led_usb_state.caps_lock) {
             oled_write_P(PSTR("CAPS "), false);
@@ -1947,119 +1950,81 @@ static void print_status_narrow(void) {
             oled_write_P(PSTR("     "), false);
         }
 
-        /* Trackpad gesture bitmap display (32x11px at row 4) - only when trackpad enabled and not in special modes */
-        uint8_t current_layer = get_highest_layer(layer_state);
-        if (trackpad_enabled && !sniper_learning_mode && !sniper_info_mode) {
-            const char* gesture_bitmap = get_trackpad_gesture_bitmap(current_layer);
-            oled_set_cursor(0, 4);
-            oled_write_raw_P(gesture_bitmap, 44); // 32x11 = 44 bytes
-        } else {
-            /* Clear gesture bitmap area when trackpad is disabled or in special modes */
-            oled_set_cursor(0, 4);
-            oled_write_raw_P(gesture_blank, 44); // Clear with blank bitmap (same size as gesture bitmaps)
+        /* Row 4: WPM */
+        oled_set_cursor(0, 4);
+        char wpm_str[6];
+        snprintf(wpm_str, sizeof(wpm_str), "%3d", get_current_wpm());
+        oled_write_P(PSTR("W"), false);
+        oled_write(wpm_str, false);
+
+        /* Row 5: empty */
+        oled_set_cursor(0, 5);
+        oled_write_P(PSTR("     "), false);
+
+        /* Row 6: Layer name */
+        oled_set_cursor(0, 6);
+        switch (current_layer) {
+            case 0: oled_write_P(PSTR("BASIC"), false); break;
+            case 1: oled_write_P(PSTR(" NUM "), false); break;
+            case 2: oled_write_P(PSTR(" FNC "), false); break;
+            case 3: oled_write_P(PSTR("MOUSE"), false); break;
+            case 4: oled_write_P(PSTR(" SYM "), false); break;
+            default: oled_write_P(PSTR("     "), false); break;
         }
 
-        /* Always clear the text areas first to prevent artifacts */
-        oled_set_cursor(0, 6);
-        oled_write_P(PSTR("        "), false); // Clear line 6
+        /* Rows 7-9: Trackpad status info */
         oled_set_cursor(0, 7);
-        oled_write_P(PSTR("        "), false); // Clear line 7
+        oled_write_P(PSTR("     "), false);
         oled_set_cursor(0, 8);
-        oled_write_P(PSTR("        "), false); // Clear line 8
+        oled_write_P(PSTR("     "), false);
         oled_set_cursor(0, 9);
-        oled_write_P(PSTR("        "), false); // Clear line 9
+        oled_write_P(PSTR("     "), false);
 
         if (trackpad_enabled) {
-            // Check for special display modes first
             if (sniper_learning_mode) {
-                /* Learning mode display */
-                oled_set_cursor(0, 6);
-                oled_write_P(PSTR("LEARN"), false);
                 oled_set_cursor(0, 7);
-                oled_write_P(PSTR("SNIPE"), false);
-
-                /* Show "HOLD MODS" instruction */
+                oled_write_P(PSTR("LEARN"), false);
                 oled_set_cursor(0, 8);
                 oled_write_P(PSTR("HOLD"), false);
                 oled_set_cursor(0, 9);
                 oled_write_P(PSTR("MODS"), false);
-            } else {
-                /* Normal gesture mode text explanation */
-                oled_set_cursor(0, 6);
-                if (user_config.scroll_layers & (1 << current_layer)) {
-                    oled_write_P(PSTR("SCROL"), false);
-                } else if (user_config.swipe2_layers & (1 << current_layer)) {
-                    oled_write_P(PSTR("2SWPE"), false);
-                } else if (user_config.swipe3_layers & (1 << current_layer)) {
-                    oled_write_P(PSTR("3SWPE"), false);
+            } else if (sniper_info_mode) {
+                oled_set_cursor(0, 7);
+                oled_write_P(PSTR("SNIPE"), false);
+                oled_set_cursor(0, 8);
+                if (sniper_modifier_mask == 0) {
+                    oled_write_P(PSTR("NONE"), false);
                 } else {
-                    oled_write_P(PSTR("CURSR"), false);
+                    char mod_str[9] = "";
+                    if (sniper_modifier_mask & MOD_BIT(KC_LCTL)) strcat(mod_str, "LC");
+                    if (sniper_modifier_mask & MOD_BIT(KC_LSFT)) strcat(mod_str, "LS");
+                    if (sniper_modifier_mask & MOD_BIT(KC_LALT)) strcat(mod_str, "LA");
+                    if (sniper_modifier_mask & MOD_BIT(KC_LGUI)) strcat(mod_str, "LG");
+                    if (sniper_modifier_mask & MOD_BIT(KC_RCTL)) strcat(mod_str, "RC");
+                    if (sniper_modifier_mask & MOD_BIT(KC_RSFT)) strcat(mod_str, "RS");
+                    if (sniper_modifier_mask & MOD_BIT(KC_RALT)) strcat(mod_str, "RA");
+                    if (sniper_modifier_mask & MOD_BIT(KC_RGUI)) strcat(mod_str, "RG");
+                    oled_write(mod_str, false);
                 }
-
-                /* Cursor speed (DPI) */
+            } else {
+                /* Normal mode: cursor/scroll speed */
                 oled_set_cursor(0, 8);
                 if (sniper_mode_active) {
                     oled_write_P(PSTR("SNP"), false);
                 } else {
-                    oled_write_P(PSTR("NORM"), false);
+                    oled_write_P(PSTR("DPI"), false);
                 }
-                // Only show speed/scroll info in normal mode (not learning mode)
-                if (!sniper_learning_mode) {
-                    oled_set_cursor(4, 8);
-                    char speed_str[8]; // Generous buffer to avoid any truncation warnings
-                    snprintf(speed_str, sizeof(speed_str), "%d", get_current_cursor_speed());
-                    oled_write(speed_str, false);
+                oled_set_cursor(4, 8);
+                char speed_str[6];
+                snprintf(speed_str, sizeof(speed_str), "%d", get_current_cursor_speed());
+                oled_write(speed_str, false);
 
-                    /* Scroll speed display */
-                    oled_set_cursor(0, 9);
-                    oled_write_P(PSTR("SCR"), false);
-                    oled_set_cursor(4, 9);
-                    char scr_str[8]; // Generous buffer to avoid any truncation warnings
-                    snprintf(scr_str, sizeof(scr_str), "%d", scroll_speed);
-                    oled_write(scr_str, false);
-                }
-            }
-        } else {
-            /* No trackpad mode display */
-            oled_set_cursor(0, 6);
-            oled_write_P(PSTR("NO"), false);
-            oled_set_cursor(0, 7);
-            oled_write_P(PSTR("TRACKPAD"), false);
-        }
-
-        /* Handle sniper info display mode */
-        if (sniper_info_mode) {
-            /* Clear display area */
-            oled_set_cursor(0, 6);
-            oled_write_P(PSTR("        "), false);
-            oled_set_cursor(0, 7);
-            oled_write_P(PSTR("        "), false);
-            oled_set_cursor(0, 8);
-            oled_write_P(PSTR("        "), false);
-            oled_set_cursor(0, 9);
-            oled_write_P(PSTR("        "), false);
-
-            /* Show sniper modifier info */
-            oled_set_cursor(0, 6);
-            oled_write_P(PSTR("SNIPER"), false);
-            oled_set_cursor(0, 7);
-            oled_write_P(PSTR("MODS:"), false);
-
-            /* Display learned modifiers */
-            oled_set_cursor(0, 8);
-            if (sniper_modifier_mask == 0) {
-                oled_write_P(PSTR("NONE"), false);
-            } else {
-                char mod_str[9] = "";  // 8 chars max + null terminator
-                if (sniper_modifier_mask & MOD_BIT(KC_LCTL)) strcat(mod_str, "LC");
-                if (sniper_modifier_mask & MOD_BIT(KC_LSFT)) strcat(mod_str, "LS");
-                if (sniper_modifier_mask & MOD_BIT(KC_LALT)) strcat(mod_str, "LA");
-                if (sniper_modifier_mask & MOD_BIT(KC_LGUI)) strcat(mod_str, "LG");
-                if (sniper_modifier_mask & MOD_BIT(KC_RCTL)) strcat(mod_str, "RC");
-                if (sniper_modifier_mask & MOD_BIT(KC_RSFT)) strcat(mod_str, "RS");
-                if (sniper_modifier_mask & MOD_BIT(KC_RALT)) strcat(mod_str, "RA");
-                if (sniper_modifier_mask & MOD_BIT(KC_RGUI)) strcat(mod_str, "RG");
-                oled_write(mod_str, false);
+                oled_set_cursor(0, 9);
+                oled_write_P(PSTR("SCR"), false);
+                oled_set_cursor(4, 9);
+                char scr_str[6];
+                snprintf(scr_str, sizeof(scr_str), "%d", scroll_speed);
+                oled_write(scr_str, false);
             }
         }
 
