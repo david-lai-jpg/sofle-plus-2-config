@@ -102,11 +102,11 @@
                 {"matrix": [9, 1], "x": 13, "y": 4.125},
                 {"matrix": [9, 0], "x": 14, "y": 4.375},
 				
-				{"matrix": [0, 6], "x": 7, "y": 4.5}, // Left
-				{"matrix": [1, 6], "x": 6.5, "y": 5.0}, // Up
-				{"matrix": [2, 6], "x": 7, "y": 5.5}, // 62 - bottom
-				{"matrix": [3, 6], "x": 7.5, "y": 5.0}, // 63 - middle right
-				{"matrix": [4, 6], "x": 7, "y": 5.0} // 64 - middle center (click)
+				{"matrix": [0, 6], "x": 6.5, "y": 5.0}, // 60 - left
+				{"matrix": [1, 6], "x": 7, "y": 4.5}, // 61 - up
+				{"matrix": [2, 6], "x": 7.5, "y": 5.0}, // 62 - right
+				{"matrix": [3, 6], "x": 7, "y": 5.5}, // 63 - bottom
+				{"matrix": [4, 6], "x": 7, "y": 5.0} // 64 - center (click)
             ]
         }
     }

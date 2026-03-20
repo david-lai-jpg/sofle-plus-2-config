@@ -132,11 +132,11 @@ def clean_keyboard_json() -> dict:
         tp_center_x = 7.75  # midpoint between left (6) and right (9.5) thumb tall keys
         tp_base_y = 5.5     # below the 1.5u tall thumb keys (which end at ~5.75)
         trackpad_positions = [
-            {"x": tp_center_x,       "y": tp_base_y},          # 60 [0,6] Top
-            {"x": tp_center_x - 1.0, "y": tp_base_y + 1.0},   # 61 [1,6] Middle left
-            {"x": tp_center_x,       "y": tp_base_y + 2.0},   # 62 [2,6] Bottom center
-            {"x": tp_center_x + 1.0, "y": tp_base_y + 1.0},   # 63 [3,6] Middle right
-            {"x": tp_center_x,       "y": tp_base_y + 1.0},   # 64 [4,6] Middle center (click)
+            {"x": tp_center_x - 1.0, "y": tp_base_y + 1.0},   # 60 [0,6] Left
+            {"x": tp_center_x,       "y": tp_base_y},          # 61 [1,6] Up
+            {"x": tp_center_x + 1.0, "y": tp_base_y + 1.0},   # 62 [2,6] Right
+            {"x": tp_center_x,       "y": tp_base_y + 2.0},   # 63 [3,6] Bottom
+            {"x": tp_center_x,       "y": tp_base_y + 1.0},   # 64 [4,6] Center (click)
         ]
         for i, tp in enumerate(trackpad_positions):
             idx = n - 5 + i

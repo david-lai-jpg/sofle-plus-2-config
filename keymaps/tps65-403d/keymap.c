@@ -606,7 +606,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         TD(0),   LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
         KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,     CK_PO,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
                  KC_F1,   KC_F3,   KC_LALT, KC_LGUI, KC_SPC,              LT(4,KC_ENT), LT(1,KC_BSPC), CK_FNML, KC_F3, KC_F2,
-                 KC_F1,   KC_F3,   MS_BTN2, KC_F2,   MS_BTN1
+                 KC_F1,   KC_F3,   KC_F2,   MS_BTN2, MS_BTN1
     ),
 
     /* Layer 1 — NUMBER (hold pos 56) */
