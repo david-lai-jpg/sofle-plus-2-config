@@ -1758,6 +1758,13 @@ static const char PROGMEM gesture_scroll[] = {
 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+// Mac modifier symbol glyphs for OLED (6 bytes each, column-major, bit 0 = top row)
+// These render as pixel art since the SSD1306 font doesn't have Unicode
+static const uint8_t PROGMEM glyph_ctrl[]  = {0x10, 0x08, 0x04, 0x08, 0x10, 0x00};  // ⌃
+static const uint8_t PROGMEM glyph_opt[]   = {0x30, 0x30, 0x28, 0x24, 0x24, 0x00};  // ⌥
+static const uint8_t PROGMEM glyph_shift[] = {0x08, 0x74, 0x42, 0x74, 0x08, 0x00};  // ⇧
+static const uint8_t PROGMEM glyph_cmd[]   = {0x36, 0x3E, 0x14, 0x3E, 0x36, 0x00};  // ⌘
+
 // Blank bitmap for clearing gesture area when trackpad is disabled (32x11px = 44 bytes)
 static const char gesture_blank[44] PROGMEM = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -1976,18 +1983,29 @@ static void print_status_narrow(void) {
             oled_write_P(PSTR("     "), false);
         }
 
-        /* Row 4-5: Active modifiers (OS-aware labels) */
+        /* Row 4: Active modifiers (Mac: ⌃⌥⇧⌘ pixel glyphs / Win: CASW text) */
         oled_set_cursor(0, 4);
         uint8_t mods = get_mods() | get_oneshot_mods();
         os_variant_t mod_os = get_effective_os_detection();
-        bool is_mac = (mod_os == OS_MACOS || mod_os == OS_IOS);
-        char mod_str[6] = "     ";
-        // Positions: [0]=Ctrl/^  [1]=Alt/Opt  [2]=Shift  [3]=GUI/Cmd/Win/Super
-        if (mods & MOD_MASK_CTRL)  mod_str[0] = is_mac ? '^' : 'C';
-        if (mods & MOD_MASK_ALT)   mod_str[1] = is_mac ? 'O' : 'A';
-        if (mods & MOD_MASK_SHIFT) mod_str[2] = 'S';
-        if (mods & MOD_MASK_GUI)   mod_str[3] = is_mac ? 'G' : 'W';
-        oled_write(mod_str, false);
+        if (mod_os == OS_MACOS || mod_os == OS_IOS) {
+            // Mac: render ⌃⌥⇧⌘ as raw pixel glyphs
+            uint8_t mod_buf[30];
+            memset(mod_buf, 0, 30);
+            if (mods & MOD_MASK_CTRL)  memcpy_P(mod_buf + 0,  glyph_ctrl,  6);
+            if (mods & MOD_MASK_ALT)   memcpy_P(mod_buf + 6,  glyph_opt,   6);
+            if (mods & MOD_MASK_SHIFT) memcpy_P(mod_buf + 12, glyph_shift, 6);
+            if (mods & MOD_MASK_GUI)   memcpy_P(mod_buf + 18, glyph_cmd,   6);
+            oled_write_raw(mod_buf, 30);
+        } else {
+            // Win/Linux: text labels
+            char mod_str[6] = "     ";
+            if (mods & MOD_MASK_CTRL)  mod_str[0] = 'C';
+            if (mods & MOD_MASK_ALT)   mod_str[1] = 'A';
+            if (mods & MOD_MASK_SHIFT) mod_str[2] = 'S';
+            if (mods & MOD_MASK_GUI)   mod_str[3] = 'W';
+            oled_write(mod_str, false);
+        }
+        /* Row 5: empty */
         oled_set_cursor(0, 5);
         oled_write_P(PSTR("     "), false);
 
