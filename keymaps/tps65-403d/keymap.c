@@ -707,22 +707,16 @@ void keyboard_post_init_user(void) {
     vial_user_config_init(&user_config, sizeof(user_config));
 #endif
 
-    // Seed Vial tap dance slot 0: hold=Shift, double-tap=Caps Lock
-    // Only writes if slot is still at default (all KC_NO), won't overwrite Vial GUI changes
-    vial_tap_dance_entry_t td0;
-    if (dynamic_keymap_get_tap_dance(0, &td0) == 0) {
-        if (td0.on_tap == KC_NO && td0.on_hold == KC_NO &&
-            td0.on_double_tap == KC_NO && td0.on_tap_hold == KC_NO) {
-            vial_tap_dance_entry_t td_shift_caps = {
-                .on_tap = KC_LSFT,
-                .on_hold = KC_LSFT,
-                .on_double_tap = KC_CAPS,
-                .on_tap_hold = KC_NO,
-                .custom_tapping_term = TAPPING_TERM
-            };
-            dynamic_keymap_set_tap_dance(0, &td_shift_caps);
-        }
-    }
+    // Force Vial tap dance slot 0: hold=Shift, double-tap=Caps Lock
+    // Written every boot to ensure correct config regardless of EEPROM state
+    vial_tap_dance_entry_t td_shift_caps = {
+        .on_tap = KC_LSFT,
+        .on_hold = KC_LSFT,
+        .on_double_tap = KC_CAPS,
+        .on_tap_hold = KC_NO,
+        .custom_tapping_term = TAPPING_TERM
+    };
+    dynamic_keymap_set_tap_dance(0, &td_shift_caps);
 
 }
 
