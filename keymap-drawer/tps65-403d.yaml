@@ -25,7 +25,7 @@ layers:
   - O
   - P
   - '='
-  - CK SHCP
+  - TD(0)
   - {t: A, h: LCTL}
   - {t: S, h: LALT}
   - {t: D, h: LGUI}

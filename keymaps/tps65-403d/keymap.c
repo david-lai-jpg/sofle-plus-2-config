@@ -80,7 +80,6 @@
       OS_DETECTION_TOGGLE,       // Toggle OS detection on/off
       ZMTOG,                     // Toggle zoom gestures on/off
       CK_FNML,                   // FN/Mouseless: hold=MO(2), tap=TG(3); on MOUSELESS: hold=MO(4), tap=TG(3)
-      CK_SHCP,                   // Hold=Shift, double-tap=Caps Lock
       };
   #else
       enum custom_keycodes { // Use USER 00 instead of SAFE_RANGE for Via. VIA json must include the custom keycode.
@@ -111,7 +110,6 @@
       OS_DETECTION_TOGGLE,       // Toggle OS detection on/off
       ZMTOG,                     // Toggle zoom gestures on/off
       CK_FNML,                   // FN/Mouseless: hold=MO(2), tap=TG(3); on MOUSELESS: hold=MO(4), tap=TG(3)
-      CK_SHCP,                   // Hold=Shift, double-tap=Caps Lock
       };
   #endif
 
@@ -599,17 +597,13 @@ bool dip_switch_update_user(uint8_t index, bool active) {
 }
 #endif
 
-// Shift/Caps Lock custom keycode state (replaces tap dance to avoid Vial linker conflict)
-static uint16_t shift_caps_timer = 0;
-static uint8_t shift_caps_tap_count = 0;
-
 // Keymaps and encoder configuration (65 arguments for LAYOUT)
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Layer 0 — BASE (Cyboard Imprint migration) */
     [0] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL,
-        CK_SHCP, LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
+        TD(0),   LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
         KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,     CK_PO,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
                  KC_F1,   KC_F3,   KC_LALT, KC_LGUI, KC_SPC,              LT(4,KC_ENT), LT(1,KC_BSPC), CK_FNML, KC_F3, KC_F2,
                  KC_F1,   KC_F3,   MS_BTN1, KC_F2,   MS_BTN2
@@ -712,6 +706,33 @@ void keyboard_post_init_user(void) {
 #ifdef VIAL_USER_CONFIG_ENABLE
     vial_user_config_init(&user_config, sizeof(user_config));
 #endif
+
+    // Seed Vial tap dance slot 0: hold=Shift, double-tap=Caps Lock
+    // Only writes if slot is still at default (all KC_NO), won't overwrite Vial GUI changes
+    vial_tap_dance_entry_t td0;
+    if (dynamic_keymap_get_tap_dance(0, &td0) == 0) {
+        if (td0.on_tap == KC_NO && td0.on_hold == KC_NO &&
+            td0.on_double_tap == KC_NO && td0.on_tap_hold == KC_NO) {
+            vial_tap_dance_entry_t td_shift_caps = {
+                .on_tap = KC_LSFT,
+                .on_hold = KC_LSFT,
+                .on_double_tap = KC_CAPS,
+                .on_tap_hold = KC_NO,
+                .custom_tapping_term = TAPPING_TERM
+            };
+            dynamic_keymap_set_tap_dance(0, &td_shift_caps);
+        }
+    }
+
+    // Force RGB base color to orange on first flash (overrides stale Vial EEPROM color)
+    // Uses a magic byte at a safe EEPROM offset to only run once
+    #define EEPROM_RGB_INIT_OFFSET 0x0FB0
+    #define RGB_INIT_MAGIC 0xAC
+    uint8_t rgb_init = eeprom_read_byte((uint8_t*)EEPROM_RGB_INIT_OFFSET);
+    if (rgb_init != RGB_INIT_MAGIC) {
+        rgb_matrix_sethsv(21, 255, 120);  // Orange: hue=21, sat=255, val=120
+        eeprom_write_byte((uint8_t*)EEPROM_RGB_INIT_OFFSET, RGB_INIT_MAGIC);
+    }
 }
 
 void matrix_scan_user(void) {
@@ -1438,22 +1459,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        case CK_SHCP:  // Hold=Shift, double-tap=Caps Lock
-            if (record->event.pressed) {
-                if (shift_caps_tap_count > 0 && timer_elapsed(shift_caps_timer) < TAPPING_TERM) {
-                    // Second tap within tapping term → caps lock
-                    tap_code(KC_CAPS);
-                    shift_caps_tap_count = 0;
-                } else {
-                    // First press → start shift
-                    shift_caps_tap_count = 1;
-                    shift_caps_timer = timer_read();
-                    register_code(KC_LSFT);
-                }
-            } else {
-                unregister_code(KC_LSFT);
-            }
-            return false;
     }
 
     return true;
@@ -1939,9 +1944,9 @@ static void print_status_narrow(void) {
         oled_set_cursor(0,1);
         uint8_t display_layer = get_highest_layer(layer_state);
         switch (display_layer) {
-            case 0: oled_write_P(PSTR("BASE "), false); break;
+            case 0: oled_write_P(PSTR(" BASE"), false); break;
             case 1: oled_write_P(PSTR("NUMBR"), false); break;
-            case 2: oled_write_P(PSTR("FN   "), false); break;
+            case 2: oled_write_P(PSTR("  FN "), false); break;
             case 3: oled_write_P(PSTR("MOUSE"), false); break;
             case 4: oled_write_P(PSTR("SYMBL"), false); break;
             default: oled_write_P(PSTR("     "), false); break;
