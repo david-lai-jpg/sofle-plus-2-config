@@ -714,7 +714,7 @@ void keyboard_post_init_user(void) {
         .on_hold = KC_LSFT,
         .on_double_tap = KC_CAPS,
         .on_tap_hold = KC_NO,
-        .custom_tapping_term = 250
+        .custom_tapping_term = 200
     };
     dynamic_keymap_set_tap_dance(0, &td_shift_caps);
 
@@ -1142,7 +1142,7 @@ uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
     if (IS_QK_LAYER_TAP(tap_hold_keycode)) {
         return 0;  // Bypass Achordion entirely for LT() keys
     }
-    return 200;  // Match TAPPING_TERM for home-row mods
+    return TAPPING_TERM;  // Match TAPPING_TERM for home-row mods
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
