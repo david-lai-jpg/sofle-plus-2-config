@@ -6,7 +6,7 @@ SRC += achordion.c
 # read more here https://docs.qmk.fm/features/caps_word, but it may relates to COMMAND_ENABLE = no, already disabled by default so no conflict here.
 CAPS_WORD_ENABLE = yes
 TRI_LAYER_ENABLE = yes
-LEADER_ENABLE = yes
+LEADER_ENABLE = no             # Not used — saves process_record overhead
 
 
 ########### VIA VIAL ###########
@@ -23,9 +23,9 @@ VIAL_USER_CONFIG_ENABLE = yes
 
 # Reduce size of Vial
 QMK_SETTINGS = yes
-COMBO_ENABLE = yes
-TAP_DANCE_ENABLE = yes 
-KEY_OVERRIDE_ENABLE = yes
+COMBO_ENABLE = no              # Not used — saves process_record overhead
+TAP_DANCE_ENABLE = no          # CK_SHCP is manual, not using tap_dance_actions[]
+KEY_OVERRIDE_ENABLE = no       # Not used — saves process_record overhead
 
 ########### PLUS ###########
 

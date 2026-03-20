@@ -6,10 +6,10 @@
 //#define DEBUG_ENABLE
 //#define CONSOLE_ENABLE
 
-#define SPLIT_WPM_ENABLE
+// #define SPLIT_WPM_ENABLE  // Disabled — saves split transport bandwidth (slave animation uses 0 WPM)
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_LED_STATE_ENABLE
-#define SPLIT_HAPTIC_ENABLE
+// #define SPLIT_HAPTIC_ENABLE  // Disabled — no haptic hardware present
 #define SPLIT_POINTING_ENABLE
 #define POINTING_DEVICE_RIGHT
 
