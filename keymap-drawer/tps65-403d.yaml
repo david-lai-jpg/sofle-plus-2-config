@@ -63,9 +63,9 @@ layers:
   - F2
   - F1
   - F3
-  - $$mdi:mouse-left-click-outline$$
-  - F2
   - MS BTN2
+  - F2
+  - $$mdi:mouse-left-click-outline$$
   NUMBER:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}

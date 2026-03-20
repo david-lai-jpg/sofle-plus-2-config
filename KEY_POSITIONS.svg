@@ -126,13 +126,13 @@
 
   <!-- ═══════════════════════════════════════ TRACKPAD ═══════════════════════════════════════ -->
   <text x="410" y="340" class="section">TRACKPAD</text>
-  <!-- Trackpad: physical layout from keyboard.json x/y coordinates -->
-  <!-- 60 top center, 61-62-63 middle row (left to right), 64 bottom center -->
+  <!-- Trackpad: physical layout (user-confirmed) -->
+  <!-- 60 top center, 61-64-63 middle row (left, center, right), 62 bottom center -->
   <rect x="438" y="352" width="42" height="42" class="trackpad" rx="6"/><text x="459" y="379" class="trackpad-num">60</text>
   <rect x="398" y="398" width="42" height="42" class="trackpad" rx="6"/><text x="419" y="425" class="trackpad-num">61</text>
-  <rect x="438" y="398" width="42" height="42" class="trackpad" rx="6"/><text x="459" y="425" class="trackpad-num">62</text>
+  <rect x="438" y="398" width="42" height="42" class="trackpad" rx="20"/><text x="459" y="425" class="trackpad-num">64</text>
   <rect x="478" y="398" width="42" height="42" class="trackpad" rx="6"/><text x="499" y="425" class="trackpad-num">63</text>
-  <rect x="438" y="448" width="42" height="42" class="trackpad" rx="20"/><text x="459" y="475" class="trackpad-num">64</text>
+  <rect x="438" y="448" width="42" height="42" class="trackpad" rx="6"/><text x="459" y="475" class="trackpad-num">62</text>
 
   <!-- ═══════════════════════════════════════ LEGEND ═══════════════════════════════════════ -->
   <text x="960" y="78" class="section">LEGEND</text>
