@@ -714,7 +714,7 @@ void keyboard_post_init_user(void) {
         .on_hold = KC_LSFT,
         .on_double_tap = KC_CAPS,
         .on_tap_hold = KC_NO,
-        .custom_tapping_term = TAPPING_TERM
+        .custom_tapping_term = 250
     };
     dynamic_keymap_set_tap_dance(0, &td_shift_caps);
 
