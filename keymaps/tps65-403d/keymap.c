@@ -919,7 +919,7 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
             scroll_buffer_x = scroll_buffer_x % divider;
         }
         if (abs(scroll_buffer_y) >= divider) {
-            mouse_report.v = (scroll_buffer_y / divider) * (scroll_dir_v ? -1 : 1);
+            mouse_report.v = (scroll_buffer_y / divider) * (scroll_dir_v ? 1 : -1);
             scroll_buffer_y = scroll_buffer_y % divider;
         }
 
@@ -929,25 +929,26 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
         return mouse_report;
 
     } else if (user_config.swipe2_layers & (1 << layer)) {
-        // 2-FINGER SWIPE MODE (horizontal gestures)
+        // 2-FINGER SWIPE MODE (4-directional F-key gestures)
         uint32_t current_time = timer_read();
 
-        if (abs(raw_x) > SWIPE_THRESHOLD) {
+        if ((abs(raw_x) > SWIPE_THRESHOLD || abs(raw_y) > SWIPE_THRESHOLD)) {
             if (!two_finger_gesture_active &&
                 (current_time - last_swipe_time) > SWIPE_COOLDOWN_MS) {
 
-                os_variant_t detected_os = get_effective_os_detection();
-                if (raw_x > 0) {
-                    if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-                        tap_code16(G(KC_LEFT));  // Browser back on macOS/iOS (universal)
+                if (abs(raw_y) > abs(raw_x)) {
+                    // Vertical swipe
+                    if (raw_y > 0) {
+                        tap_code(KC_F3);  // Swipe down
                     } else {
-                        tap_code16(A(KC_LEFT));  // Browser back on Linux/Windows/Default (universal)
+                        tap_code(KC_F3);  // Swipe up
                     }
                 } else {
-                    if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-                        tap_code16(G(KC_RIGHT)); // Browser forward on macOS/iOS (universal)
+                    // Horizontal swipe
+                    if (raw_x > 0) {
+                        tap_code(KC_F1);  // Swipe left (raw_x > 0 = finger moves right = content goes left)
                     } else {
-                        tap_code16(A(KC_RIGHT)); // Browser forward on Linux/Windows/Default (universal)
+                        tap_code(KC_F2);  // Swipe right
                     }
                 }
 
@@ -964,49 +965,26 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
         return mouse_report;
 
     } else if (user_config.swipe3_layers & (1 << layer)) {
-        // 3-FINGER SWIPE MODE (4-directional gestures)
+        // 3-FINGER SWIPE MODE (4-directional F-key gestures, same as 2-finger)
         uint32_t current_time = timer_read();
 
         if ((abs(raw_x) > SWIPE_THRESHOLD || abs(raw_y) > SWIPE_THRESHOLD)) {
             if (!three_finger_gesture_active &&
                 (current_time - last_swipe_time) > SWIPE_COOLDOWN_MS) {
 
-                // Determine primary direction
                 if (abs(raw_y) > abs(raw_x)) {
-                    // Vertical swipe - Mission Control/Task View/Activities
-                    os_variant_t detected_os = get_effective_os_detection();
+                    // Vertical swipe
                     if (raw_y > 0) {
-                        if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-                            tap_code16(C(KC_DOWN));  // App Exposé on macOS/iOS
-                        } else {
-                            tap_code16(G(KC_D));     // Show Desktop on Linux/Windows/Default (universal)
-                        }
+                        tap_code(KC_F3);  // Swipe down
                     } else {
-                        if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-                            tap_code16(C(KC_UP));    // Mission Control on macOS/iOS
-                        } else {
-                            tap_code16(G(KC_TAB));   // Activities/Task View on Linux/Windows/Default (universal)
-                        }
+                        tap_code(KC_F3);  // Swipe up
                     }
                 } else {
-                    // Horizontal swipe - Desktop switching
-                    os_variant_t detected_os = get_effective_os_detection();
+                    // Horizontal swipe
                     if (raw_x > 0) {
-                        if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-                            tap_code16(C(KC_LEFT));  // Previous desktop on macOS/iOS
-                        } else if (detected_os == OS_WINDOWS) {
-                            tap_code16(G(C(KC_LEFT))); // Previous virtual desktop on Windows
-                        } else {
-                            tap_code16(C(A(KC_LEFT))); // Previous desktop on Linux/Default (GNOME/KDE/XFCE)
-                        }
+                        tap_code(KC_F1);  // Swipe left
                     } else {
-                        if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-                            tap_code16(C(KC_RIGHT)); // Next desktop on macOS/iOS
-                        } else if (detected_os == OS_WINDOWS) {
-                            tap_code16(G(C(KC_RIGHT))); // Next virtual desktop on Windows
-                        } else {
-                            tap_code16(C(A(KC_RIGHT))); // Next desktop on Linux/Default (GNOME/KDE/XFCE)
-                        }
+                        tap_code(KC_F2);  // Swipe right
                     }
                 }
 
