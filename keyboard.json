@@ -104,9 +104,9 @@
 				
 				{"matrix": [0, 6], "x": 7, "y": 4.5}, // Left
 				{"matrix": [1, 6], "x": 6.5, "y": 5.0}, // Up
-				{"matrix": [2, 6], "x": 7, "y": 5.0}, // Right
-				{"matrix": [3, 6], "x": 7.5, "y": 5.0}, // Down
-				{"matrix": [4, 6], "x": 7, "y": 5.5} // Click - GUI
+				{"matrix": [2, 6], "x": 7, "y": 5.5}, // 62 - bottom center
+				{"matrix": [3, 6], "x": 7.5, "y": 5.0}, // 63 - middle right
+				{"matrix": [4, 6], "x": 7, "y": 5.0} // 64 - middle center (click)
             ]
         }
     }
