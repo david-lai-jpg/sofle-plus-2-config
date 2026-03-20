@@ -28,12 +28,12 @@ layers:
   - CK SHCP
   - {t: A, h: LCTL}
   - {t: S, h: LALT}
-  - {t: D, h: LGUI}
-  - {t: F, h: LSFT}
+  - {t: D, h: LSFT}
+  - {t: F, h: LGUI}
   - G
   - H
-  - {t: J, h: RSFT}
-  - {t: K, h: RGUI}
+  - {t: J, h: RGUI}
+  - {t: K, h: RSFT}
   - {t: L, h: RALT}
   - {t: ;, h: RCTL}
   - ''''

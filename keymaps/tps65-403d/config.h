@@ -71,8 +71,9 @@
   #define OS_DETECTION_DEBOUNCE 300          // Extended from 200ms to 300ms for stability
 
 /* Achordion / home-row-mods timing */
-#define TAPPING_TERM 250           // Raised from 200ms to reduce false mod triggers when typing fast
+#define TAPPING_TERM 200           // 200ms tap-hold window (was 250ms — too sluggish for fast typing)
 #define QUICK_TAP_TERM 150         // Prevent auto-repeat on mod-tap keys
+#define ACHORDION_STREAK           // Suppress mod activation during fast typing rolls
 
 /* Tri-layer: hold NUMBER (1) + FN (2) → MOUSELESS (3) */
 #define TRI_LAYER_LOWER_LAYER 1

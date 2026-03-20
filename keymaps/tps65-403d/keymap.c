@@ -610,7 +610,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL,
-        CK_SHCP, LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
+        CK_SHCP, LCTL_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LGUI_T(KC_F), KC_G,  KC_H, RGUI_T(KC_J), RSFT_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
         KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,     CK_PO,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
                  KC_F1,   KC_F3,   KC_LALT, KC_LGUI, KC_SPC,              LT(4,KC_ENT), LT(1,KC_BSPC), CK_FNML, KC_F3, KC_F2,
                  KC_F1,   KC_F3,   KC_F2,   MS_BTN2, MS_BTN1
@@ -1139,6 +1139,12 @@ uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
         return 0;  // Bypass Achordion entirely for LT() keys
     }
     return TAPPING_TERM;  // Match TAPPING_TERM for home-row mods
+}
+
+// Make all mods eager — apply immediately, revert if Achordion decides it was a tap.
+// Without this, GUI/Alt wait the full timeout before activating, causing perceived lag.
+bool achordion_eager_mod(uint8_t mod) {
+    return true;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -1964,7 +1970,7 @@ static void print_status_narrow(void) {
         oled_set_cursor(0, 3);
         led_t led_usb_state = host_keyboard_led_state();
         if (led_usb_state.caps_lock) {
-            oled_write_P(PSTR("CAPS "), false);
+            oled_write_P(PSTR(" CAP "), false);
         } else {
             oled_write_P(PSTR("     "), false);
         }
@@ -2070,13 +2076,18 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 bool oled_task_user(void) {
+    // Throttle OLED redraws to every 100ms — saves CPU for matrix scanning
+    static uint16_t oled_timer = 0;
+    bool should_redraw = timer_elapsed(oled_timer) > 100;
+
     if (is_keyboard_master()) {
         // Master (left) OLED power management
         if (is_oled_on()) {
             if (last_input_activity_elapsed() > OLED_TIMEOUT) {
                 oled_off();
-            } else {
+            } else if (should_redraw) {
                 print_status_narrow();
+                oled_timer = timer_read();
             }
         }
         // Wake OLED on activity
@@ -2088,8 +2099,9 @@ bool oled_task_user(void) {
         if (is_oled_on()) {
             if (last_input_activity_elapsed() > OLED_TIMEOUT) {
                 oled_off();
-            } else {
+            } else if (should_redraw) {
                 render_space();
+                oled_timer = timer_read();
             }
         }
         // Wake OLED on activity
