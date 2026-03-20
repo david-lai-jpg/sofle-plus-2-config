@@ -29,6 +29,7 @@
 #define SERIAL_USART_FULL_DUPLEX
 #define SERIAL_USART_TX_PIN GP4
 #define SERIAL_USART_RX_PIN GP1
+#define SERIAL_USART_SPEED 460800   // 2x default (230400) — reduces split transport latency
 
 /* i2c oled for left*/
 #define I2C_DRIVER I2CD1

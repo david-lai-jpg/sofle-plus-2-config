@@ -6,11 +6,8 @@
 //#define DEBUG_ENABLE
 //#define CONSOLE_ENABLE
 
-// #define SPLIT_WPM_ENABLE  // Disabled — saves split transport bandwidth (slave animation uses 0 WPM)
-#define SPLIT_LAYER_STATE_ENABLE
-#define SPLIT_LED_STATE_ENABLE
-// #define SPLIT_HAPTIC_ENABLE  // Disabled — no haptic hardware present
-#define SPLIT_POINTING_ENABLE
+#define SPLIT_LAYER_STATE_ENABLE    // Needed for RGB layer indicators on slave side
+#define SPLIT_POINTING_ENABLE       // Needed for trackpad on slave side
 #define POINTING_DEVICE_RIGHT
 
 
@@ -111,7 +108,7 @@
 /*RGB end here*/
 #define RGB_MATRIX_DRIVER WS2812 
 #define DRIVER_LED_TOTAL RGBLED_NUM
-#define SPLIT_TRANSPORT_MIRROR //https://github.com/qmk/qmk_firmware/blob/master/docs/config_options.md
+// SPLIT_TRANSPORT_MIRROR disabled — slave doesn't need master's matrix, saves split bandwidth
 #define RGB_MATRIX_SLEEP
 #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 120
 
