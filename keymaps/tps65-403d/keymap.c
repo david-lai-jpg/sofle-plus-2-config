@@ -591,16 +591,66 @@ bool dip_switch_update_user(uint8_t index, bool active) {
 }
 #endif
 
+// Tap dance: shift on hold/single-tap, caps lock on double-tap
+typedef enum {
+    TD_NONE,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_TAP
+} td_state_t;
+
+static td_state_t td_shift_state = TD_NONE;
+
+static td_state_t cur_dance(tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (state->pressed) return TD_SINGLE_HOLD;
+        else return TD_SINGLE_TAP;
+    } else if (state->count == 2) {
+        return TD_DOUBLE_TAP;
+    }
+    return TD_NONE;
+}
+
+static void td_shift_caps_finished(tap_dance_state_t *state, void *user_data) {
+    td_shift_state = cur_dance(state);
+    switch (td_shift_state) {
+        case TD_SINGLE_TAP:
+        case TD_SINGLE_HOLD:
+            register_code(KC_LSFT);
+            break;
+        case TD_DOUBLE_TAP:
+            tap_code(KC_CAPS);
+            break;
+        default:
+            break;
+    }
+}
+
+static void td_shift_caps_reset(tap_dance_state_t *state, void *user_data) {
+    if (td_shift_state == TD_SINGLE_TAP || td_shift_state == TD_SINGLE_HOLD) {
+        unregister_code(KC_LSFT);
+    }
+    td_shift_state = TD_NONE;
+}
+
+enum {
+    TD_SHIFT_CAPS,
+};
+
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_shift_caps_finished, td_shift_caps_reset),
+};
+
 // Keymaps and encoder configuration (65 arguments for LAYOUT)
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Layer 0 — BASE (Cyboard Imprint migration) */
     [0] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL,
-        KC_LSFT, LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
+        TD(TD_SHIFT_CAPS), LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
         KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,     CK_PO,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
                  KC_F1,   KC_F3,   KC_LALT, KC_LGUI, KC_SPC,              LT(4,KC_ENT), LT(1,KC_BSPC), CK_FNML, KC_F3, KC_F2,
-                 KC_LEFT, KC_UP,   KC_RIGHT,KC_DOWN, MS_BTN1
+                 KC_F1,   KC_F3,   MS_BTN1, KC_F2,   MS_BTN2
     ),
 
     /* Layer 1 — NUMBER (hold pos 56) */
@@ -610,7 +660,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_EQL,  KC_4,    KC_5,    KC_6,    KC_GRV,                      KC_LBRC, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_1,    KC_2,    KC_3,    KC_F12,  KC_TRNS,  KC_TRNS,  KC_RBRC, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                 SCROLL_SPEED_DOWN, CURSOR_SPEED_DN, SCROLL_SPEED_UP, CURSOR_SPEED_UP, MS_BTN1
+                 SCROLL_SPEED_DOWN, CURSOR_SPEED_DN, SCROLL_SPEED_UP, CURSOR_SPEED_UP, KC_TRNS
     ),
 
     /* Layer 2 — FN (hold pos 57 via CK_FNML) */
@@ -620,7 +670,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         RGB_MOD, KC_F11,  KC_F4,   KC_F5,   KC_F6,   KC_GRV,                     KC_LBRC, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS,
         RGB_TOG, KC_F10,  KC_F1,   KC_F2,   KC_F3,   KC_F12,  KC_TRNS,  KC_TRNS, KC_RBRC, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, RGB_TOG
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
     /* Layer 3 — MOUSELESS (tap pos 57 or tri-layer 1+2) */
@@ -647,7 +697,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #if defined(ENCODER_MAP_ENABLE)
     const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
-        [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+        [0] = { ENCODER_CCW_CW(KC_MS_WH_UP, KC_MS_WH_DOWN), ENCODER_CCW_CW(KC_MS_WH_UP, KC_MS_WH_DOWN) },
         [1] = { ENCODER_CCW_CW(CK_ATABF, CK_ATABR), ENCODER_CCW_CW(KC_MS_WH_DOWN, KC_MS_WH_UP) },
         [2] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_F3, C(KC_F3)) },
         [3] = { ENCODER_CCW_CW(G(KC_LEFT), G(KC_RGHT)), ENCODER_CCW_CW(A(KC_RGHT), A(KC_LEFT)) },
@@ -1087,7 +1137,7 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     static uint8_t v_wheel_count = 0;
     if (mouse_report.v != 0) {
         v_wheel_count++;
-        v_wheel += scroll_dir_v ? -mouse_report.v : mouse_report.v;
+        v_wheel += scroll_dir_v ? mouse_report.v : -mouse_report.v;
         mouse_report.v = 0;
 
         // Use scroll speed setting for hardware scroll divider
@@ -1906,11 +1956,19 @@ static void display_large_layer_number(uint8_t layer) {
 static void print_status_narrow(void) {
 
 
-    /* SOFLE header and OS detection status */
+    /* Layer name header */
         oled_set_cursor(0,1);
-        oled_write("SOFLE", false);
-        oled_set_cursor(0,2);
+        uint8_t display_layer = get_highest_layer(layer_state);
+        switch (display_layer) {
+            case 0: oled_write_P(PSTR("BASE "), false); break;
+            case 1: oled_write_P(PSTR("NUMBR"), false); break;
+            case 2: oled_write_P(PSTR("FN   "), false); break;
+            case 3: oled_write_P(PSTR("MOUSE"), false); break;
+            case 4: oled_write_P(PSTR("SYMBL"), false); break;
+            default: oled_write_P(PSTR("     "), false); break;
+        }
 
+        oled_set_cursor(0,2);
         // Display OS detection status
         if (!os_detection_enabled) {
             oled_write("PLUS+", false);  // Default branding when disabled
@@ -1933,13 +1991,13 @@ static void print_status_narrow(void) {
             }
         }
 
-        /* Numlock indicator */
+        /* Caps Lock indicator */
         oled_set_cursor(0,3);
         led_t led_usb_state = host_keyboard_led_state();
-        if (led_usb_state.num_lock) {
-            oled_write_P(PSTR("NUMLK"), false);
+        if (led_usb_state.caps_lock) {
+            oled_write_P(PSTR("CAPS "), false);
         } else {
-            oled_write_P(PSTR("     "), false); // Clear if num lock off
+            oled_write_P(PSTR("     "), false);
         }
 
         /* Trackpad gesture bitmap display (32x11px at row 4) - only when trackpad enabled and not in special modes */

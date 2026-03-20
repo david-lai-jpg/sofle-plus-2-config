@@ -25,7 +25,7 @@ layers:
   - O
   - P
   - '='
-  - LSFT
+  - TD(TD SHIFT CAPS)
   - {t: A, h: LCTL}
   - {t: S, h: LALT}
   - {t: D, h: LGUI}
@@ -61,11 +61,11 @@ layers:
   - {t: FN/ML, s: Hold=FN Tap=Mouse}
   - F3
   - F2
-  - LEFT
-  - UP
-  - RIGHT
-  - DOWN
+  - F1
+  - F3
   - $$mdi:mouse-left-click-outline$$
+  - F2
+  - MS BTN2
   NUMBER:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -131,7 +131,7 @@ layers:
   - DPI-
   - Scr+
   - DPI+
-  - $$mdi:mouse-left-click-outline$$
+  - {t: ▽, type: trans}
   FN:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -197,7 +197,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - RGB TOG
+  - {t: ▽, type: trans}
   MOUSELESS:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}

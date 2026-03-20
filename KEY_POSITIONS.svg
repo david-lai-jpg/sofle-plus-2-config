@@ -126,18 +126,13 @@
 
   <!-- ═══════════════════════════════════════ TRACKPAD ═══════════════════════════════════════ -->
   <text x="410" y="340" class="section">TRACKPAD</text>
-  <!-- D-pad arrangement -->
-  <rect x="398" y="388" width="42" height="42" class="trackpad" rx="6"/><text x="419" y="415" class="trackpad-num">60</text>
-  <rect x="438" y="352" width="42" height="42" class="trackpad" rx="6"/><text x="459" y="379" class="trackpad-num">61</text>
-  <rect x="478" y="388" width="42" height="42" class="trackpad" rx="6"/><text x="499" y="415" class="trackpad-num">62</text>
-  <rect x="438" y="428" width="42" height="42" class="trackpad" rx="6"/><text x="459" y="455" class="trackpad-num">63</text>
-  <rect x="438" y="478" width="42" height="42" class="trackpad" rx="20"/><text x="459" y="505" class="trackpad-num">64</text>
-  <!-- Trackpad labels -->
-  <text x="419" y="440" class="legend-text" text-anchor="middle" font-size="9">L</text>
-  <text x="459" y="398" class="legend-text" text-anchor="middle" font-size="9">U</text>
-  <text x="499" y="440" class="legend-text" text-anchor="middle" font-size="9">R</text>
-  <text x="459" y="478" class="legend-text" text-anchor="middle" font-size="9">D</text>
-  <text x="459" y="528" class="legend-text" text-anchor="middle" font-size="9">CLK</text>
+  <!-- Trackpad: physical layout from keyboard.json x/y coordinates -->
+  <!-- 60 top center, 61-62-63 middle row (left to right), 64 bottom center -->
+  <rect x="438" y="352" width="42" height="42" class="trackpad" rx="6"/><text x="459" y="379" class="trackpad-num">60</text>
+  <rect x="398" y="398" width="42" height="42" class="trackpad" rx="6"/><text x="419" y="425" class="trackpad-num">61</text>
+  <rect x="438" y="398" width="42" height="42" class="trackpad" rx="6"/><text x="459" y="425" class="trackpad-num">62</text>
+  <rect x="478" y="398" width="42" height="42" class="trackpad" rx="6"/><text x="499" y="425" class="trackpad-num">63</text>
+  <rect x="438" y="448" width="42" height="42" class="trackpad" rx="20"/><text x="459" y="475" class="trackpad-num">64</text>
 
   <!-- ═══════════════════════════════════════ LEGEND ═══════════════════════════════════════ -->
   <text x="960" y="78" class="section">LEGEND</text>
