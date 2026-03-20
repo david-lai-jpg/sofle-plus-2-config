@@ -25,7 +25,7 @@ layers:
   - O
   - P
   - '='
-  - TD(TD SHIFT CAPS)
+  - CK SHCP
   - {t: A, h: LCTL}
   - {t: S, h: LALT}
   - {t: D, h: LGUI}

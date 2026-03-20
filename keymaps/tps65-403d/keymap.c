@@ -80,6 +80,7 @@
       OS_DETECTION_TOGGLE,       // Toggle OS detection on/off
       ZMTOG,                     // Toggle zoom gestures on/off
       CK_FNML,                   // FN/Mouseless: hold=MO(2), tap=TG(3); on MOUSELESS: hold=MO(4), tap=TG(3)
+      CK_SHCP,                   // Hold=Shift, double-tap=Caps Lock
       };
   #else
       enum custom_keycodes { // Use USER 00 instead of SAFE_RANGE for Via. VIA json must include the custom keycode.
@@ -110,6 +111,7 @@
       OS_DETECTION_TOGGLE,       // Toggle OS detection on/off
       ZMTOG,                     // Toggle zoom gestures on/off
       CK_FNML,                   // FN/Mouseless: hold=MO(2), tap=TG(3); on MOUSELESS: hold=MO(4), tap=TG(3)
+      CK_SHCP,                   // Hold=Shift, double-tap=Caps Lock
       };
   #endif
 
@@ -160,6 +162,13 @@
       // Get the current RGB brightness value (0-255)
       uint8_t brightness = rgb_matrix_get_val();
 
+      // Cap brightness for layer indicators to prevent USB power brownout
+      // 72 LEDs at full layer color can spike over 500mA USB limit
+      uint8_t current_layer = get_highest_layer(layer_state);
+      if (current_layer > 0 || host_keyboard_led_state().caps_lock) {
+          if (brightness > 50) brightness = 50;
+      }
+
       // Ensure brightness is never 0 to avoid completely dark indicators
       if (brightness == 0) brightness = 1;
 
@@ -178,8 +187,7 @@
           indicator_set = true;
       }
 
-      // Check layer state
-      uint8_t current_layer = get_highest_layer(layer_state);
+      // Check layer state — layer 0 falls through to normal RGB effect
       if (current_layer > 0) {
           switch (current_layer) {
               case 1:
@@ -206,7 +214,7 @@
               case 4:
                   for (uint8_t i = led_min; i <= led_max; i++) {
                       rgb_matrix_set_color(i,
-                          SCALE_BRIGHTNESS(255), SCALE_BRIGHTNESS(128), 0); // Orange for Layer 4
+                          SCALE_BRIGHTNESS(255), SCALE_BRIGHTNESS(150), SCALE_BRIGHTNESS(180)); // Sakura pink for Layer 4
                   }
                   indicator_set = true;
                   break;
@@ -591,55 +599,9 @@ bool dip_switch_update_user(uint8_t index, bool active) {
 }
 #endif
 
-// Tap dance: shift on hold/single-tap, caps lock on double-tap
-typedef enum {
-    TD_NONE,
-    TD_SINGLE_TAP,
-    TD_SINGLE_HOLD,
-    TD_DOUBLE_TAP
-} td_state_t;
-
-static td_state_t td_shift_state = TD_NONE;
-
-static td_state_t cur_dance(tap_dance_state_t *state) {
-    if (state->count == 1) {
-        if (state->pressed) return TD_SINGLE_HOLD;
-        else return TD_SINGLE_TAP;
-    } else if (state->count == 2) {
-        return TD_DOUBLE_TAP;
-    }
-    return TD_NONE;
-}
-
-static void td_shift_caps_finished(tap_dance_state_t *state, void *user_data) {
-    td_shift_state = cur_dance(state);
-    switch (td_shift_state) {
-        case TD_SINGLE_TAP:
-        case TD_SINGLE_HOLD:
-            register_code(KC_LSFT);
-            break;
-        case TD_DOUBLE_TAP:
-            tap_code(KC_CAPS);
-            break;
-        default:
-            break;
-    }
-}
-
-static void td_shift_caps_reset(tap_dance_state_t *state, void *user_data) {
-    if (td_shift_state == TD_SINGLE_TAP || td_shift_state == TD_SINGLE_HOLD) {
-        unregister_code(KC_LSFT);
-    }
-    td_shift_state = TD_NONE;
-}
-
-enum {
-    TD_SHIFT_CAPS,
-};
-
-tap_dance_action_t tap_dance_actions[] = {
-    [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_shift_caps_finished, td_shift_caps_reset),
-};
+// Shift/Caps Lock custom keycode state (replaces tap dance to avoid Vial linker conflict)
+static uint16_t shift_caps_timer = 0;
+static uint8_t shift_caps_tap_count = 0;
 
 // Keymaps and encoder configuration (65 arguments for LAYOUT)
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -647,7 +609,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL,
-        TD(TD_SHIFT_CAPS), LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
+        CK_SHCP, LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
         KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,     CK_PO,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
                  KC_F1,   KC_F3,   KC_LALT, KC_LGUI, KC_SPC,              LT(4,KC_ENT), LT(1,KC_BSPC), CK_FNML, KC_F3, KC_F2,
                  KC_F1,   KC_F3,   MS_BTN1, KC_F2,   MS_BTN2
@@ -1473,6 +1435,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (timer_elapsed(fnml_timer) < TAPPING_TERM) {
                     layer_invert(3);  // Toggle MOUSELESS
                 }
+            }
+            return false;
+
+        case CK_SHCP:  // Hold=Shift, double-tap=Caps Lock
+            if (record->event.pressed) {
+                if (shift_caps_tap_count > 0 && timer_elapsed(shift_caps_timer) < TAPPING_TERM) {
+                    // Second tap within tapping term → caps lock
+                    tap_code(KC_CAPS);
+                    shift_caps_tap_count = 0;
+                } else {
+                    // First press → start shift
+                    shift_caps_tap_count = 1;
+                    shift_caps_timer = timer_read();
+                    register_code(KC_LSFT);
+                }
+            } else {
+                unregister_code(KC_LSFT);
             }
             return false;
     }
