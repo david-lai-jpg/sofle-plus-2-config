@@ -80,6 +80,7 @@
       OS_DETECTION_TOGGLE,       // Toggle OS detection on/off
       ZMTOG,                     // Toggle zoom gestures on/off
       CK_FNML,                   // FN/Mouseless: hold=MO(2), tap=TG(3); on MOUSELESS: hold=MO(4), tap=TG(3)
+      CK_SHCP,                   // Hold=Shift, double-tap=Caps Lock
       };
   #else
       enum custom_keycodes { // Use USER 00 instead of SAFE_RANGE for Via. VIA json must include the custom keycode.
@@ -110,6 +111,7 @@
       OS_DETECTION_TOGGLE,       // Toggle OS detection on/off
       ZMTOG,                     // Toggle zoom gestures on/off
       CK_FNML,                   // FN/Mouseless: hold=MO(2), tap=TG(3); on MOUSELESS: hold=MO(4), tap=TG(3)
+      CK_SHCP,                   // Hold=Shift, double-tap=Caps Lock
       };
   #endif
 
@@ -597,13 +599,18 @@ bool dip_switch_update_user(uint8_t index, bool active) {
 }
 #endif
 
+// CK_SHCP state: hold=Shift, double-tap=Caps Lock (manual, no tap_dance_actions[])
+static uint16_t shcp_timer = 0;
+static bool shcp_held = false;
+static uint8_t shcp_tap_count = 0;
+
 // Keymaps and encoder configuration (65 arguments for LAYOUT)
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Layer 0 — BASE (Cyboard Imprint migration) */
     [0] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL,
-        TD(0),   LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
+        CK_SHCP, LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G,  KC_H, RSFT_T(KC_J), RGUI_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
         KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,     CK_PO,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
                  KC_F1,   KC_F3,   KC_LALT, KC_LGUI, KC_SPC,              LT(4,KC_ENT), LT(1,KC_BSPC), CK_FNML, KC_F3, KC_F2,
                  KC_F1,   KC_F3,   KC_F2,   MS_BTN2, MS_BTN1
@@ -706,17 +713,6 @@ void keyboard_post_init_user(void) {
 #ifdef VIAL_USER_CONFIG_ENABLE
     vial_user_config_init(&user_config, sizeof(user_config));
 #endif
-
-    // Force Vial tap dance slot 0: hold=Shift, double-tap=Caps Lock
-    // Written every boot to ensure correct config regardless of EEPROM state
-    vial_tap_dance_entry_t td_shift_caps = {
-        .on_tap = KC_LSFT,
-        .on_hold = KC_LSFT,
-        .on_double_tap = KC_CAPS,
-        .on_tap_hold = KC_NO,
-        .custom_tapping_term = 200
-    };
-    dynamic_keymap_set_tap_dance(0, &td_shift_caps);
 
 }
 
@@ -1422,6 +1418,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
+        case CK_SHCP:  // Hold=Shift, double-tap=Caps Lock
+            if (record->event.pressed) {
+                if (shcp_tap_count > 0 && timer_elapsed(shcp_timer) < 250) {
+                    // Double-tap detected → Caps Lock
+                    unregister_code(KC_LSFT);  // Release shift from first tap
+                    tap_code(KC_CAPS);
+                    shcp_tap_count = 0;
+                    shcp_held = false;
+                } else {
+                    // First press → Shift
+                    shcp_tap_count = 1;
+                    shcp_timer = timer_read();
+                    register_code(KC_LSFT);
+                    shcp_held = true;
+                }
+            } else {
+                if (shcp_held) {
+                    unregister_code(KC_LSFT);
+                    shcp_held = false;
+                }
+            }
+            return false;
+
     }
 
     return true;
@@ -1950,10 +1969,17 @@ static void print_status_narrow(void) {
             oled_write_P(PSTR("     "), false);
         }
 
-        /* Row 4: WPM */
+        /* Row 4: WPM (centered) */
         oled_set_cursor(0, 4);
+        uint8_t wpm = get_current_wpm();
         char wpm_str[6];
-        snprintf(wpm_str, sizeof(wpm_str), "%5d", get_current_wpm());
+        if (wpm >= 100) {
+            snprintf(wpm_str, sizeof(wpm_str), " %3d ", wpm);
+        } else if (wpm >= 10) {
+            snprintf(wpm_str, sizeof(wpm_str), " %2d  ", wpm);
+        } else {
+            snprintf(wpm_str, sizeof(wpm_str), "  %d  ", wpm);
+        }
         oled_write(wpm_str, false);
 
         /* Row 5: empty */
