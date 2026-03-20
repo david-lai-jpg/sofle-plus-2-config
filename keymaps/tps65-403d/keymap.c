@@ -1969,10 +1969,17 @@ static void print_status_narrow(void) {
             oled_write_P(PSTR("     "), false);
         }
 
-        /* Row 4: WPM (centered, zero-padded to 3 digits) */
+        /* Row 4: WPM (centered) */
         oled_set_cursor(0, 4);
+        uint8_t wpm = get_current_wpm();
         char wpm_str[6];
-        snprintf(wpm_str, sizeof(wpm_str), " %03d ", get_current_wpm());
+        if (wpm >= 100) {
+            snprintf(wpm_str, sizeof(wpm_str), " %d ", wpm);
+        } else if (wpm >= 10) {
+            snprintf(wpm_str, sizeof(wpm_str), " 0%d ", wpm);
+        } else {
+            snprintf(wpm_str, sizeof(wpm_str), "  %d  ", wpm);
+        }
         oled_write(wpm_str, false);
 
         /* Row 5: empty */
