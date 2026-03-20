@@ -1935,11 +1935,11 @@ static void print_status_narrow(void) {
         oled_set_cursor(0,1);
         uint8_t display_layer = get_highest_layer(layer_state);
         switch (display_layer) {
-            case 0: oled_write_P(PSTR(" BASE"), false); break;
-            case 1: oled_write_P(PSTR("NUMBR"), false); break;
-            case 2: oled_write_P(PSTR("  FN "), false); break;
-            case 3: oled_write_P(PSTR("MOUSE"), false); break;
-            case 4: oled_write_P(PSTR("SYMBL"), false); break;
+            case 0: oled_write_P(PSTR(" BAS "), false); break;
+            case 1: oled_write_P(PSTR(" NUM "), false); break;
+            case 2: oled_write_P(PSTR(" FN  "), false); break;
+            case 3: oled_write_P(PSTR(" MOU "), false); break;
+            case 4: oled_write_P(PSTR(" SYM "), false); break;
             default: oled_write_P(PSTR("     "), false); break;
         }
 
