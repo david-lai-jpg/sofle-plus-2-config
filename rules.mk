@@ -43,7 +43,7 @@ VIALRGB_ENABLE = yes
 # OLED
 OLED_ENABLE = yes
 OLED_DRIVER = ssd1306
-WPM_ENABLE = yes
+WPM_ENABLE = no
 OLED_TRANSPORT = i2c
 
 # Mousekey

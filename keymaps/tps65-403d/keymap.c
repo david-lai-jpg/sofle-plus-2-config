@@ -1659,54 +1659,55 @@ static const char PROGMEM mask_row_4[] = {
 
 static void render_space(void) {
 
-    char wpm = get_current_wpm();
+    // Fixed ship position (was WPM-driven, WPM module now disabled)
+    #define SHIP_POS 32  // Ship sits ~25% from left edge
     char render_row[128];
     int i;
     oled_set_cursor(0,0);
 
-    for(i=0; i<wpm/4; i++) {
+    for(i=0; i<SHIP_POS; i++) {
         render_row[i] = pgm_read_byte(space_row_1+i+animation_state);
     }
 
-    for(i=wpm/4; i<128; i++) {
-        render_row[i] = (pgm_read_byte(space_row_1+i+animation_state)&pgm_read_byte(mask_row_1+i-wpm/4)) | pgm_read_byte(ship_row_1+i-wpm/4);
+    for(i=SHIP_POS; i<128; i++) {
+        render_row[i] = (pgm_read_byte(space_row_1+i+animation_state)&pgm_read_byte(mask_row_1+i-SHIP_POS)) | pgm_read_byte(ship_row_1+i-SHIP_POS);
     }
 
     oled_write_raw(render_row, 128);
     oled_set_cursor(0,1);
 
-    for(i=0; i<wpm/4; i++) {
+    for(i=0; i<SHIP_POS; i++) {
         render_row[i] = pgm_read_byte(space_row_2+i+animation_state);
     }
 
-    for(i=wpm/4; i<128; i++) {
-        render_row[i] = (pgm_read_byte(space_row_2+i+animation_state)&pgm_read_byte(mask_row_2+i-wpm/4)) | pgm_read_byte(ship_row_2+i-wpm/4);
+    for(i=SHIP_POS; i<128; i++) {
+        render_row[i] = (pgm_read_byte(space_row_2+i+animation_state)&pgm_read_byte(mask_row_2+i-SHIP_POS)) | pgm_read_byte(ship_row_2+i-SHIP_POS);
     }
 
     oled_write_raw(render_row, 128);
     oled_set_cursor(0,2);
 
-    for(i=0; i<wpm/4; i++) {
+    for(i=0; i<SHIP_POS; i++) {
         render_row[i] = pgm_read_byte(space_row_3+i+animation_state);
     }
 
-    for(i=wpm/4; i<128; i++) {
-        render_row[i] = (pgm_read_byte(space_row_3+i+animation_state)&pgm_read_byte(mask_row_3+i-wpm/4)) | pgm_read_byte(ship_row_3+i-wpm/4);
+    for(i=SHIP_POS; i<128; i++) {
+        render_row[i] = (pgm_read_byte(space_row_3+i+animation_state)&pgm_read_byte(mask_row_3+i-SHIP_POS)) | pgm_read_byte(ship_row_3+i-SHIP_POS);
     }
 
     oled_write_raw(render_row, 128);
     oled_set_cursor(0,3);
 
-    for(i=0; i<wpm/4; i++) {
+    for(i=0; i<SHIP_POS; i++) {
         render_row[i] = pgm_read_byte(space_row_4+i+animation_state);
     }
 
-    for(i=wpm/4; i<128; i++) {
-        render_row[i] = (pgm_read_byte(space_row_4+i+animation_state)&pgm_read_byte(mask_row_4+i-wpm/4)) | pgm_read_byte(ship_row_4+i-wpm/4);
+    for(i=SHIP_POS; i<128; i++) {
+        render_row[i] = (pgm_read_byte(space_row_4+i+animation_state)&pgm_read_byte(mask_row_4+i-SHIP_POS)) | pgm_read_byte(ship_row_4+i-SHIP_POS);
     }
 
     oled_write_raw(render_row, 128);
-    animation_state = (animation_state + 1 + (wpm/15)) % (128*2);
+    animation_state = (animation_state + 1) % (128*2);
 
 }
 
@@ -1975,20 +1976,9 @@ static void print_status_narrow(void) {
             oled_write_P(PSTR("     "), false);
         }
 
-        /* Row 4: WPM (centered) */
+        /* Row 4-5: empty */
         oled_set_cursor(0, 4);
-        uint8_t wpm = get_current_wpm();
-        char wpm_str[6];
-        if (wpm >= 100) {
-            snprintf(wpm_str, sizeof(wpm_str), " %d ", wpm);
-        } else if (wpm >= 10) {
-            snprintf(wpm_str, sizeof(wpm_str), " 0%d ", wpm);
-        } else {
-            snprintf(wpm_str, sizeof(wpm_str), "  %d  ", wpm);
-        }
-        oled_write(wpm_str, false);
-
-        /* Row 5: empty */
+        oled_write_P(PSTR("     "), false);
         oled_set_cursor(0, 5);
         oled_write_P(PSTR("     "), false);
 
