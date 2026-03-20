@@ -1909,7 +1909,7 @@ static void print_status_narrow(void) {
         switch (display_layer) {
             case 0: oled_write_P(PSTR("BASIC"), false); break;
             case 1: oled_write_P(PSTR(" NUM "), false); break;
-            case 2: oled_write_P(PSTR(" FN  "), false); break;
+            case 2: oled_write_P(PSTR(" FNC "), false); break;
             case 3: oled_write_P(PSTR("MOUSE"), false); break;
             case 4: oled_write_P(PSTR(" SYM "), false); break;
             default: oled_write_P(PSTR("     "), false); break;
