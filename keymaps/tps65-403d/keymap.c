@@ -724,15 +724,6 @@ void keyboard_post_init_user(void) {
         }
     }
 
-    // Force RGB base color to orange on first flash (overrides stale Vial EEPROM color)
-    // Uses a magic byte at a safe EEPROM offset to only run once
-    #define EEPROM_RGB_INIT_OFFSET 0x0FB0
-    #define RGB_INIT_MAGIC 0xAC
-    uint8_t rgb_init = eeprom_read_byte((uint8_t*)EEPROM_RGB_INIT_OFFSET);
-    if (rgb_init != RGB_INIT_MAGIC) {
-        rgb_matrix_sethsv(21, 255, 120);  // Orange: hue=21, sat=255, val=120
-        eeprom_write_byte((uint8_t*)EEPROM_RGB_INIT_OFFSET, RGB_INIT_MAGIC);
-    }
 }
 
 void matrix_scan_user(void) {

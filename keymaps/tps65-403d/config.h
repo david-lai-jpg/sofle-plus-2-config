@@ -82,11 +82,6 @@
  /* Keyboard name override for this keymap */
 #define PRODUCT "SoflePLUS2 v4.03d TPS65 Signature"
 
-/* Default RGB color: orange (hue 21/255 ≈ 30°, full saturation) */
-#define RGB_MATRIX_DEFAULT_HUE 21
-#define RGB_MATRIX_DEFAULT_SAT 255
-#define RGB_MATRIX_DEFAULT_VAL 120
-
 /* Vial UID for this specific keymap */
 #define VIAL_KEYBOARD_UID {0x12, 0x38, 0x7D, 0x9C, 0x1C, 0x0E, 0x58, 0x43}
 
