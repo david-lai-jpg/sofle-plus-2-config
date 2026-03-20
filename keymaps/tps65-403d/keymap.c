@@ -1976,9 +1976,18 @@ static void print_status_narrow(void) {
             oled_write_P(PSTR("     "), false);
         }
 
-        /* Row 4-5: empty */
+        /* Row 4-5: Active modifiers (OS-aware labels) */
         oled_set_cursor(0, 4);
-        oled_write_P(PSTR("     "), false);
+        uint8_t mods = get_mods() | get_oneshot_mods();
+        os_variant_t mod_os = get_effective_os_detection();
+        bool is_mac = (mod_os == OS_MACOS || mod_os == OS_IOS);
+        char mod_str[6] = "     ";
+        // Positions: [0]=Ctrl/^  [1]=Alt/Opt  [2]=Shift  [3]=GUI/Cmd/Win/Super
+        if (mods & MOD_MASK_CTRL)  mod_str[0] = is_mac ? '^' : 'C';
+        if (mods & MOD_MASK_ALT)   mod_str[1] = is_mac ? 'O' : 'A';
+        if (mods & MOD_MASK_SHIFT) mod_str[2] = 'S';
+        if (mods & MOD_MASK_GUI)   mod_str[3] = is_mac ? 'G' : 'W';
+        oled_write(mod_str, false);
         oled_set_cursor(0, 5);
         oled_write_P(PSTR("     "), false);
 
