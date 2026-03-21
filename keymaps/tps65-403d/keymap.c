@@ -1393,6 +1393,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     layer_off(2);
                 }
                 if (timer_elapsed(fnml_timer) < TAPPING_TERM) {
+                    tap_code(KC_RALT);  // Send RALT before toggling
                     layer_invert(3);  // Toggle MOUSELESS
                 }
             }
