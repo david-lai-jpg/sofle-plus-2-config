@@ -612,11 +612,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL,
         CK_SHCP, LCTL_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LGUI_T(KC_F), KC_G,  KC_H, RGUI_T(KC_J), RSFT_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
         KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,     CK_PO,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
-                 KC_F1,   KC_F3,   KC_LALT, KC_LGUI, KC_SPC,              LT(4,KC_ENT), LT(1,KC_BSPC), CK_FNML, KC_F3, KC_F2,
+                 KC_F1,   KC_LALT, KC_LGUI, KC_SPC,  KC_F3,               KC_F3, LT(4,KC_ENT), LT(1,KC_BSPC), CK_FNML, KC_F2,
                  KC_F1,   KC_F3,   KC_F2,   MS_BTN2, MS_BTN1
     ),
 
-    /* Layer 1 — NUMBER (hold pos 56) */
+    /* Layer 1 — NUMBER (hold pos 57) */
     [1] = LAYOUT(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_ESC,  KC_MINS, KC_7,    KC_8,    KC_9,    KC_0,                        KC_TRNS, KC_TRNS, KC_UP,   KC_TRNS, KC_TRNS, KC_MINS,
@@ -626,7 +626,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                  SCROLL_SPEED_DOWN, CURSOR_SPEED_DN, SCROLL_SPEED_UP, CURSOR_SPEED_UP, KC_TRNS
     ),
 
-    /* Layer 2 — FN (hold pos 57 via CK_FNML) */
+    /* Layer 2 — FN (hold pos 58 via CK_FNML) */
     [2] = LAYOUT(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_ESC,  KC_F13,  KC_F7,   KC_F8,   KC_F9,   KC_TRNS,                    KC_TRNS, KC_TRNS, KC_UP,   KC_TRNS, KC_TRNS, KC_MINS,
@@ -636,17 +636,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
-    /* Layer 3 — MOUSELESS (tap pos 57 or tri-layer 1+2) */
+    /* Layer 3 — MOUSELESS (tap pos 58 or tri-layer 1+2) */
     [3] = LAYOUT(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_ESC,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    SGUI(KC_4), SGUI(KC_5), KC_TRNS, SGUI(KC_3), KC_TRNS, KC_TRNS,
         KC_TRNS, KC_A,    KC_S,    KC_D,    KC_F,    KC_TRNS,                     KC_TRNS, KC_J,    KC_K,    KC_L,    KC_SCLN, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_ENT,  KC_BSPC, CK_FNML, KC_TRNS, KC_TRNS,
+                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_ENT,  KC_BSPC, CK_FNML, KC_TRNS,
                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
-    /* Layer 4 — SYMBOLS (hold pos 55) */
+    /* Layer 4 — SYMBOLS (hold pos 56) */
     [4] = LAYOUT(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_ESC,  KC_MINS, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,                    KC_TRNS, KC_TRNS, KC_UP,   KC_TRNS, KC_TRNS, KC_MINS,

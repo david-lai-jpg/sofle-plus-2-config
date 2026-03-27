@@ -52,14 +52,14 @@ layers:
   - /
   - \
   - F1
-  - F3
   - LALT
   - LGUI
   - SPC
+  - F3
+  - F3
   - {t: ENT, h: SYMBOLS}
   - {t: BSPC, h: NUMBER}
   - {t: FN/ML, s: Hold=FN Tap=Mouse}
-  - F3
   - F2
   - F1
   - F3
@@ -123,8 +123,8 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {type: held}
   - {t: ▽, type: trans}
+  - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - Scr-
@@ -254,10 +254,10 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - ENT
   - BSPC
   - {t: FN/ML, s: Hold=FN Tap=Mouse}
-  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -320,8 +320,8 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {type: held}
   - {t: ▽, type: trans}
+  - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}

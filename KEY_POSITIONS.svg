@@ -152,21 +152,6 @@
   <rect x="960" y="234" width="28" height="28" class="trackpad" rx="4"/>
   <text x="996" y="255" class="legend-text">Trackpad (purple)</text>
 
-  <!-- Base Layer Reference -->
-  <text x="960" y="290" class="section">BASE LAYER REF</text>
-  <text x="960" y="308" class="legend-text">0-5:   `  1  2  3  4  5</text>
-  <text x="960" y="323" class="legend-text">6-11:  6  7  8  9  0  -</text>
-  <text x="960" y="343" class="legend-text">12-17: Esc Q  W  E  R  T</text>
-  <text x="960" y="358" class="legend-text">18-23: Y  U  I  O  P  Bspc</text>
-  <text x="960" y="378" class="legend-text">24-29: Tab A  S  D  F  G</text>
-  <text x="960" y="393" class="legend-text">30-35: H  J  K  L  ;  '</text>
-  <text x="960" y="413" class="legend-text">36-41: Sft Z  X  C  V  B</text>
-  <text x="960" y="428" class="legend-text">44-49: N  M  ,  .  /  Sft</text>
-  <text x="960" y="448" class="legend-text">42-43: Encoders (L/R)</text>
-  <text x="960" y="468" class="legend-text">50-54: GUI Alt Ctl MO1 Ent</text>
-  <text x="960" y="483" class="legend-text">55-59: Spc MO2 Ctl Alt GUI</text>
-  <text x="960" y="503" class="legend-text">60-64: Trackpad D-Pad+Click</text>
-
   <!-- Bottom summary -->
   <text x="650" y="560" class="subtitle">Verified: 65 positions (0-64) | Rows: 48 keys | Encoders: 2 | Thumbs: 10 | Trackpad: 5</text>
 </svg>
